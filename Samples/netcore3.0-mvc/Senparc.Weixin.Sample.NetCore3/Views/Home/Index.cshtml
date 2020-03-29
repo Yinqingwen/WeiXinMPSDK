@@ -1,326 +1,304 @@
-﻿@model Senparc.Weixin.Sample.NetCore3.Models.VD.Home_IndexVD
+﻿
 @{
-    ViewBag.Title = "微信SDK,微信公众平台,小程序SDK - Senparc.Weixin SDK - 公众号 企业号 开放平台 盛派微信号";
-
+    ViewData["Title"] = "首页";
+    Layout = "~/Views/Shared/_LayoutSbAdmin2.cshtml";
 }
-@section scripts
-    {
-    <script>
-        $(function () {
-            $(".test table td:not(:empty)").hover(function () {
-                $(this).addClass('currentTestItem');
-            },
-                function () {
-                    $(this).removeClass('currentTestItem');
-                });
+<!-- Begin Page Content -->
+<div class="container-fluid">
 
-            $('#showTest').click(function () {
-                $(this).fadeOut(function () { $('#testTip').slideDown(); });
-            });
-        });
-    </script>
-}
-@functions {
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+    </div>
 
-    public static string YesOrNo(bool obj)
-    {
-        return obj ? "Y-brightgreen" : "N-lightgrey";
-    }
-}
-<div class="wrapper">
-    <div class="weixin-bottom">
-        <h1 class="weixin-item-title">
-            目前 Senparc.Weixin SDK 已支持微信 7.x API 中几乎所有接口以及<strong>小程序</strong>
-        </h1>
-        <p>
-            当前站点运行 <a href="https://github.com/JeffreySu/WeiXinMPSDK/tree/master/Samples/netcore3-mvc/" target="_blank">Sample</a>
-            版本：v@(TempData["SampleVersion"]) (@TempData["BuildTime"])
-        </p>
-        <p>&nbsp;</p>
+    <!-- Content Row -->
+    <div class="row">
 
-        <div class="weixin-bottom-buttons">
-            <p class="weixin-item-button">
-                <a href="https://book.weixin.senparc.com/book/link?code=sdk-homepage" class="application" target="_blank">购买正版 Senparc 官方教程</a>
-                &nbsp; &nbsp;
-                <a href="https://book.weixin.senparc.com/book/videolinknetease?code=sdk-home-top-button" class="application" target="_blank">观看官方视频教程</a>
-                &nbsp; &nbsp; &nbsp;
-
-                <a href="/Home/Book" class="application" target="_blank">官方教程配套阅读系统</a>
-                &nbsp; &nbsp; &nbsp;
-
-            </p>
-            <p class="weixin-item-button" style="padding-top:10px;">
-
-                <a href="https://sdk.weixin.senparc.com@(Url.Action("Index", "Document" ))" class="application" target="_blank">下载 SDK 帮助文档</a>
-                &nbsp; &nbsp; &nbsp;
-
-                <a href="https://github.com/JeffreySu/WeiXinMPSDK" class="application" target="_blank">GitHub 源码</a>
-                &nbsp; &nbsp; &nbsp;
-
-                @*
-                    </p>
-                    <p class="weixin-item-button">
-                *@
-                <a href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%B6%88%E6%81%AF%E6%8E%A5%E5%8F%A3%E6%8C%87%E5%8D%97" class="application" target="_blank">微信官方API</a>
-            </p>
-        </div>
-        <div class="clear"></div>
-        <p class="weixin-item-title">
-
-            <a href="https://github.com/JeffreySu/WeiXinMPSDK" target="_blank"><img src="https://img.shields.io/github/watchers/JeffreySu/WeixinMPSDK.svg?style=social&label=Watch" /></a>
-
-
-            <a href="https://github.com/JeffreySu/WeiXinMPSDK" target="_blank"><img src="https://img.shields.io/github/stars/JeffreySu/WeixinMPSDK.svg?style=social&label=Star" /></a>
-
-
-            <a href="https://github.com/JeffreySu/WeiXinMPSDK" target="_blank"><img src="https://img.shields.io/github/forks/JeffreySu/WeixinMPSDK.svg?style=social&label=Fork" /></a>
-
-
-            <a href="https://github.com/JeffreySu/WeiXinMPSDK" target="_blank"><img src="https://img.shields.io/github/followers/JeffreySu.svg?style=social&logo=github&label=Follow" /></a>
-        </p>
-        <div class="clear"></div>
-
-        @foreach (var item in Model.AssemblyModelCollection)
-        {
-            var groupInfo = item.Key;
-            var model = item.Value;
-            var i = 0;
-            <div class="weixin-bottom-group">
-                <h2 class="weixin-item-title">@groupInfo.Title</h2>
-
-                <div class="weixin-bottom-description">
-                    @Html.Raw(groupInfo.Description)
-                </div>
-                <div class="weixin-bottom-table" id="nuget-versions-@i">
-                    <table class="tbVersion">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>功能模块</th>
-                                <th>Nuget 包名称</th>
-                                <th>Nuget 版本</th>
-                                @*<th>Nuget 下载量</th>*@
-                                <th>当前站点运行版本</th>
-                                <th>.NET 4.5</th>
-                                <th>.NET Standard<br />2.0 / 2.1</th>
-                                <th>.NET Core<br />2.x / 3.x</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var value in model)
-                            {
-                            <tr>
-                                <td>@(++i)</td>
-                                <td>@Html.Raw(value.Title)</td>
-                                <td>
-                                    <a class="sdk-version" href="https://www.nuget.org/packages/@(value.NugetName)" target="_blank">
-                                        @*@(value.AssemblyName)*@@(value.NugetName)
-                                    </a>
-                                </td>
-                                <td>
-                                    <a class="sdk-version" href="https://www.nuget.org/packages/@(value.NugetName)" target="_blank">
-                                        <img src="https://img.shields.io/nuget/v/@(value.NugetName).svg?style=flat" />
-                                    </a>
-                                </td>
-                                @*<td>
-                                    <img src="https://img.shields.io/nuget/dt/@(value.NugetName).svg" alt="NuGet" style="max-width:100%;">
-                                </td>*@
-                                <td>
-                                    @if (value.GitHubUrl != null)
-                                    {
-                                        <a class="sdk-version" href="@value.GitHubUrl" target="_blank">v@(value.Version)</a>
-                                    }
-                                    else
-                                    {
-                                        <text>v@(value.Version)</text>
-                                    }
-                                </td>
-                                <td><img title=".NET 4.5" alt=".NET 4.5" src="https://img.shields.io/badge/4.5-@(YesOrNo(value.SupportNet45)).svg" /></td>
-                                <td><img title=".NET Standard 2.0 / 2.1" alt=".NET Standard 2.0 / 2.1" src="https://img.shields.io/badge/standard2.1-@(YesOrNo(value.SupportStandard21)).svg" /></td>
-                                <td><img title=".NET Core 2.x / 3.x" alt=".NET Core 2.x / 3.x" src="https://img.shields.io/badge/core3.1-@(YesOrNo(value.SupportNetCore31)).svg" /></td>
-                            </tr>
-                            }
-
-                        </tbody>
-                    </table>
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Earnings (Monthly)</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-        }
-
-    </div>
-    <div class="content-weixin">
-        <p class="weixin-item-title">关注官方微信 进行互动测试</p>
-
-        <div class="weixin-item weixin-item-bs weixin-item-left">
-            <img class="official-img" src="~/images/v2/ewm_01.png" alt="微信SDK公众号" />
         </div>
 
-        <div class="weixin-item weixin-item-bs weixin-item-left">
-            <img class="official-img" src="~/images/SenparcRobot_MiniProgram.jpg" alt="微信SDK小程序" />
-        </div>
-
-        @*<div class="clear"></div>*@
-        <div class="weixin-item  readmore">
-            <table class="tbVersion tbVersion_bootstrap">
-                <tr>
-                    <td>运行中的缓存框架：@TempData["CacheStrategy"]</td>
-                    <td>@Html.ActionLink("测试", "Test", "Cache", null, new { @class = "sdk-version" })</td>
-                </tr>
-                <tr>
-                    <td>最新文档版本（MP）：v@(TempData["NewestDocumentVersion"])</td>
-                    <td>@Html.ActionLink("下载", "Index", "Document", null, new { @class = "sdk-version" })</td>
-                </tr>
-                <tr>
-                    <td>GitHub 源码：<img src="https://mysenparc.visualstudio.com/Senparc%20SDK/_apis/build/status/Weixin%20SDK/Senparc.Weixin%20master-pipeline-status"></td>
-                    <td>
-                        <a href="https://github.com/JeffreySu/WeiXinMPSDK" class="sdk-version" target="_blank">
-                            查看
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>小程序：<img src="https://travis-ci.org/JeffreySu/WxOpen.svg?branch=master"></td>
-                    <td>
-                        <a href="https://github.com/JeffreySu/WxOpen" class="sdk-version" target="_blank">
-                            查看
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>WebSocket：<img src="https://travis-ci.org/JeffreySu/WebSocket.svg?branch=master"></td>
-                    <td>
-                        <a href="https://github.com/JeffreySu/Senparc.WebSocket" class="sdk-version" target="_blank">
-                            查看
-                        </a>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="clear"></div>
-    </div>
-    <div class="clear"></div>
-    <div class="line"></div>
-
-    <div id="showTest">
-        ⇩ 展开公众号测试说明 ⇩
-    </div>
-
-    <div class="test test_bs" id="testTip">
-        <table>
-            <tr>
-                <td>
-                    <div class="test-item">
-                        <img src="~/images/v2/icon_01.png" />
-                        <p class="item-title">文本测试</p>
-                        <p class="item-content">随意输入文本信息，系统将自动回复一条包含原文的文本信息。如果连续发送多条信息，系统会自动记录通讯的下文，直到超过规定时间记录自动清空。</p>
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Earnings (Annual)</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
                     </div>
-                </td>
-                <td>
-                    <div class="test-item">
-                        <img src="~/images/v2/icon_02.png" />
-                        <p class="item-title">位置测试</p>
-                        <p class="item-content">发送一条位置信息，系统将自动回复详细的位置信息图片数据及一条图文链接。</p>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="test-item">
-                        <img src="~/images/v2/icon_03.png" />
-                        <p class="item-title">图片测试</p>
-                        <p class="item-content">发送一张图片，系统将自动回复一条带链接的图文信息。</p>
-                    </div>
-                </td>
-                <td>
-                    <div class="test-item">
-                        <img src="~/images/v2/icon_04.png" />
-                        <p class="item-title">语音测试</p>
-                        <p class="item-content">发送一条语音信息，系统将自动回复一条音乐格式信息。</p>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="test-item">
-                        <img src="~/images/v2/icon_05.png" />
-                        <p class="item-title">视频测试</p>
-                        <p class="item-content">发送一条视频信息，系统将自动回复一条带有视频ID的信息。</p>
-                    </div>
-                </td>
-                <td>
-                    <div class="test-item">
-                        <img src="~/images/v2/icon_06.png" />
-                        <p class="item-title">订阅测试</p>
-                        <p class="item-content">订阅（关注）账号的第一时间，系统将发送一条欢迎信息（等同于之前的Hello2BizUser）</p>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="test-item">
-                        <img src="~/images/v2/icon_07.png" />
-                        <p class="item-title">客服端约束测试</p>
-                        <p class="item-content">发送文字信息【约束】，进行测试。</p>
-                    </div>
-                </td>
-                <td>
-                    <div class="test-item">
-                        <img src="~/images/v2/icon_08.png" />
-                        <p class="item-title">自定义菜单测试</p>
-                        <p class="item-content">点击自定菜单进行测试</p>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="test-item">
-                        <img src="~/images/v2/icon_09.png" />
-                        <p class="item-title">代理+托管测试</p>
-                        <p class="item-content">1.发送文字信息【代理】或【托管】，或点击菜单【功能体验】【托管】，服务器将从其他微信平台获取“代理”或“托管”文字请求的结果。2.点击菜单【功能体验】>【会员消息】，查看自己的会员信息（来自另外一台 WeiWeiHi 服务器的微信会员系统）</p>
-                    </div>
-                </td>
-                <td>
-                    <div class="test-item">
-                        <img src="~/images/v2/icon_12.png" />
-                        <p class="item-title">微信支付测试</p>
-                        <p class="item-content">点击菜单【功能体验】 【微信支付】，体验微信支付整个过程。</p>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="test-item">
-                        <img src="~/images/v2/icon_13.png" />
-                        <p class="item-title">微信弹出拍照或相册测试</p>
-                        <p class="item-content">点击菜单【二级菜单】 【拍照或相册】，弹出拍照或从相框选择对话框，发送图片。</p>
-                    </div>
-                </td>
-                <td>
-                    <div class="test-item">
-                        <img src="~/images/v2/icon_14.png" />
-                        <p class="item-title">微信扫码测试</p>
-                        <p class="item-content">点击菜单【二级菜单】 【微信扫码】，进入微信扫码界面。</p>
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </div>
-
-    <div class="line"></div>
-    <div class="weixin-weiweihi">
-        <div class="weixin-item">
-            <div class="weixin-item-content">
-                <p class="weixin-item-title">基于 Senparc SDK 开发的“微微嗨会议智能助手”</p>
-                <p class="weixin-item-font">“微微嗨会议智能助手”是在 Senparc.Weixin.MP + Open + Redis 等模块的基础上研发的实时场景互动云平台，为各类会议、活动、婚庆、教育等不同场景提供组织管理及多屏实时互动服务。欢迎体验！</p>
-                @*<a href="http://www.weiweihi.com/AgentApply" class="application" target="_blank">申请成为微微嗨代理</a>*@
+                </div>
             </div>
-            <div class="weixin-item-img">
-                <img src="~/images/v2/ewm_02.png" width="250" />
-            </div>
-            <a href="javascript:;"></a>
         </div>
-        <div class="clear"></div>
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks</div>
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-auto">
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                                </div>
+                                <div class="col">
+                                    <div class="progress progress-sm mr-2">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Requests Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending Requests</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Content Row -->
+
+    <div class="row">
+
+        <!-- Area Chart -->
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Dropdown Header:</div>
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-area">
+                        <canvas id="myAreaChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pie Chart -->
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Dropdown Header:</div>
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-pie pt-4 pb-2">
+                        <canvas id="myPieChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-center small">
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-primary"></i> Direct
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-success"></i> Social
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-info"></i> Referral
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+
+        <!-- Content Column -->
+        <div class="col-lg-6 mb-4">
+
+            <!-- Project Card Example -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
+                </div>
+                <div class="card-body">
+                    <h4 class="small font-weight-bold">Server Migration <span class="float-right">20%</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Sales Tracking <span class="float-right">40%</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Customer Database <span class="float-right">60%</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Payout Details <span class="float-right">80%</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-info" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Account Setup <span class="float-right">Complete!</span></h4>
+                    <div class="progress">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Color System -->
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-primary text-white shadow">
+                        <div class="card-body">
+                            Primary
+                            <div class="text-white-50 small">#4e73df</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-success text-white shadow">
+                        <div class="card-body">
+                            Success
+                            <div class="text-white-50 small">#1cc88a</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-info text-white shadow">
+                        <div class="card-body">
+                            Info
+                            <div class="text-white-50 small">#36b9cc</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-warning text-white shadow">
+                        <div class="card-body">
+                            Warning
+                            <div class="text-white-50 small">#f6c23e</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-danger text-white shadow">
+                        <div class="card-body">
+                            Danger
+                            <div class="text-white-50 small">#e74a3b</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-secondary text-white shadow">
+                        <div class="card-body">
+                            Secondary
+                            <div class="text-white-50 small">#858796</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-light text-black shadow">
+                        <div class="card-body">
+                            Light
+                            <div class="text-black-50 small">#f8f9fc</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-dark text-white shadow">
+                        <div class="card-body">
+                            Dark
+                            <div class="text-white-50 small">#5a5c69</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-lg-6 mb-4">
+
+            <!-- Illustrations -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
+                </div>
+                <div class="card-body">
+                    <div class="text-center">
+                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="img/undraw_posting_photo.svg" alt="">
+                    </div>
+                    <p>Add some quality, svg illustrations to your project courtesy of <a target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a constantly updated collection of beautiful svg images that you can use completely free and without attribution!</p>
+                    <a target="_blank" rel="nofollow" href="https://undraw.co/">Browse Illustrations on unDraw &rarr;</a>
+                </div>
+            </div>
+
+            <!-- Approach -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
+                </div>
+                <div class="card-body">
+                    <p>SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to reduce CSS bloat and poor page performance. Custom CSS classes are used to create custom components and custom utility classes.</p>
+                    <p class="mb-0">Before working with this theme, you should become familiar with the Bootstrap framework, especially the utility classes.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </div>
-
+<!-- /.container-fluid -->
