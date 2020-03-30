@@ -26,6 +26,7 @@ using Senparc.Weixin.MP.Entities;
 using Senparc.Weixin.MP.Entities.Menu;
 using Senparc.CO2NET.HttpUtility;
 using Senparc.Weixin.MP;
+using Senparc.Weixin.MP.Containers;
 
 namespace Senparc.Weixin.Sample.NetCore3.Controllers
 {
@@ -83,6 +84,16 @@ namespace Senparc.Weixin.Sample.NetCore3.Controllers
             ViewData["IP"] = GetIP() ?? "使用CMD命令ping sdk.weixin.senparc.com";
 
             return View(result);
+        }
+
+        private string GetToken()
+        {
+            if (!AccessTokenContainer.CheckRegistered(base.AppId))
+                AccessTokenContainer.Register(AppId, AppSecret);
+
+            var result = AccessTokenContainer.TryGetAccessToken(base.AppId, base.AppSecret);
+
+            return result.ToString();
         }
 
         public ActionResult GetToken(string appId, string appSecret)
@@ -190,7 +201,8 @@ namespace Senparc.Weixin.Sample.NetCore3.Controllers
         {
             try
             {
-                var result = CommonApi.GetMenu(token);
+                //var result = CommonApi.GetMenu(token);
+                var result = CommonApi.GetMenu(AppId);
                 if (result == null)
                 {
                     return Json(new { error = "菜单不存在或验证失败！" }, new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() });

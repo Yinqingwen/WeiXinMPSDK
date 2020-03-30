@@ -30,6 +30,14 @@ namespace Senparc.Weixin.Sample.NetCore3.Controllers
             }
         }
 
+        protected string AppSecret
+        {
+            get 
+            {
+                return Config.SenparcWeixinSetting.WeixinAppSecret;
+            }
+        }
+
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             //给模板页 footer 输出使用，根据实际需要配置

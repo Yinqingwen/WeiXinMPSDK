@@ -238,10 +238,10 @@
         <textarea class="form-control" id="txtReveiceJSON" rows="3"></textarea>
     </div>
     <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-secondary" id="submitJsonMenu">使用此 JSON 直接更新到服务器</button>
-        <button type="button" class="btn btn-secondary" id="btnGetMenu">获取当前菜单</button>
-        <button type="button" class="btn btn-secondary" id="submitMenu">更新到服务器</button>
-        <button type="button" class="btn btn-secondary" id="btnDeleteMenu">删除菜单</button>
+        <button type="button" class="btn btn-primary" id="submitJsonMenu">使用此 JSON 直接更新到服务器</button>
+        <button type="button" class="btn btn-primary" id="btnGetMenu">获取当前菜单</button>
+        <button type="button" class="btn btn-primary" id="submitMenu">更新到服务器</button>
+        <button type="button" class="btn btn-primary" id="btnDeleteMenu">删除菜单</button>
     </div>
     <div class="form-row">
         <div class="col">
@@ -267,7 +267,7 @@
 {
     <script type="text/javascript" src="~/Scripts/senparc.menu.js"></script>
     <script>
-        $(function () {
+        $().ready(function () {
             senparc.menu.init();
         });
     </script>

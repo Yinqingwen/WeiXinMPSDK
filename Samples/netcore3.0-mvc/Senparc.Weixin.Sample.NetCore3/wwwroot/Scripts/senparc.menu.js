@@ -7,7 +7,7 @@ senparc.menu = {
         menuState = $('#menuState');
 
         $('#buttonDetails').hide();
-        $('#menuEditor').hide();
+        //$('#menuEditor').hide();
 
         $("#buttonDetails_type").change(senparc.menu.typeChanged);
 
@@ -88,6 +88,7 @@ senparc.menu = {
         });
 
         $('#menuLogin_Submit').click(function () {
+
             $.getJSON('/Menu/GetToken?t=' + Math.random(), { appId: $('#menuLogin_AppId').val(), appSecret: $('#menuLogin_AppSecret').val() },
                 function (json) {
                     if (json.access_token) {
@@ -105,48 +106,50 @@ senparc.menu = {
         $('#btnGetMenu').click(function () {
             menuState.html('获取菜单中...');
             $.getJSON('/Menu/GetMenu?t=' + Math.random(), { token: senparc.menu.token }, function (json) {
-                if (json.menu) {
-                    $(':input[id^=menu_button]:not([id$=_type])').val('');
-                    $('#buttonDetails:input').val('');
-
-                    var buttons = json.menu.button;
-                    //此处i与j和页面中反转
-                    for (var i = 0; i < buttons.length; i++) {
-                        var button = buttons[i];
-                        $('#menu_button' + i + '_name').val(button.name);
-                        $('#menu_button' + i + '_key').val(button.key);
-                        $('#menu_button' + i + '_type').val(button.type || 'click');
-                        $('#menu_button' + i + '_url').val(button.url);
-                        $('#menu_button' + i + '_appid').val(button.appid);
-                        $('#menu_button' + i + '_pagepath').val(button.pagepath);
-                        $('#menu_button' + i + '_mediaid').val(button.media_id);
-
-                        if (button.sub_button && button.sub_button.length > 0) {
-                            //二级菜单
-                            for (var j = 0; j < button.sub_button.length; j++) {
-                                var subButton = button.sub_button[j];
-                                var idPrefix = '#menu_button' + i + '_sub_button' + j;
-                                $(idPrefix + "_name").val(subButton.name);
-                                $(idPrefix + "_type").val(subButton.type || 'click');
-                                $(idPrefix + "_key").val(subButton.key);
-                                $(idPrefix + "_url").val(subButton.url);
-                                $(idPrefix + "_appid").val(subButton.appid);
-                                $(idPrefix + "_pagepath").val(subButton.pagepath);
-                                $(idPrefix + "_mediaid").val(subButton.media_id);
-                            }
-                        } else {
-                            //底部菜单
-                            //...
-                        }
-                    }
-
-                    //显示JSON
-                    $('#txtReveiceJSON').text(JSON.stringify(json));
-
-                    menuState.html('菜单获取已完成');
-                } else {
-                    menuState.html(json.error || '执行过程有错误，请检查！');
-                }
+                alert(json.menu);
+                /*
+                 if (json.menu) {
+                     $(':input[id^=menu_button]:not([id$=_type])').val('');
+                     $('#buttonDetails:input').val('');
+ 
+                     var buttons = json.menu.button;
+                     //此处i与j和页面中反转
+                     for (var i = 0; i < buttons.length; i++) {
+                         var button = buttons[i];
+                         $('#menu_button' + i + '_name').val(button.name);
+                         $('#menu_button' + i + '_key').val(button.key);
+                         $('#menu_button' + i + '_type').val(button.type || 'click');
+                         $('#menu_button' + i + '_url').val(button.url);
+                         $('#menu_button' + i + '_appid').val(button.appid);
+                         $('#menu_button' + i + '_pagepath').val(button.pagepath);
+                         $('#menu_button' + i + '_mediaid').val(button.media_id);
+ 
+                         if (button.sub_button && button.sub_button.length > 0) {
+                             //二级菜单
+                             for (var j = 0; j < button.sub_button.length; j++) {
+                                 var subButton = button.sub_button[j];
+                                 var idPrefix = '#menu_button' + i + '_sub_button' + j;
+                                 $(idPrefix + "_name").val(subButton.name);
+                                 $(idPrefix + "_type").val(subButton.type || 'click');
+                                 $(idPrefix + "_key").val(subButton.key);
+                                 $(idPrefix + "_url").val(subButton.url);
+                                 $(idPrefix + "_appid").val(subButton.appid);
+                                 $(idPrefix + "_pagepath").val(subButton.pagepath);
+                                 $(idPrefix + "_mediaid").val(subButton.media_id);
+                             }
+                         } else {
+                             //底部菜单
+                             //...
+                         }
+                     }
+ 
+                     //显示JSON
+                     $('#txtReveiceJSON').text(JSON.stringify(json));
+ 
+                     menuState.html('菜单获取已完成');
+                 } else {
+                     menuState.html(json.error || '执行过程有错误，请检查！');
+                 }*/
             });
         });
 
