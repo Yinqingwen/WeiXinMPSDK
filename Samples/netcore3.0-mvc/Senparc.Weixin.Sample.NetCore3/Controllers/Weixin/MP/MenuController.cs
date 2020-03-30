@@ -123,6 +123,8 @@ namespace Senparc.Weixin.Sample.NetCore3.Controllers
         [HttpPost]
         public ActionResult CreateMenu(string token, GetMenuResultFull resultFull, MenuMatchRule menuMatchRule)
         {
+            if (String.IsNullOrWhiteSpace(token))
+                token = GetToken();
             var useAddCondidionalApi = menuMatchRule != null && !menuMatchRule.CheckAllNull();
             var apiName = string.Format("使用接口：{0}。", (useAddCondidionalApi ? "个性化菜单接口" : "普通自定义菜单接口"));
             try

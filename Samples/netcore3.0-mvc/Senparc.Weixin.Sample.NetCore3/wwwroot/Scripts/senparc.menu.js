@@ -106,8 +106,6 @@ senparc.menu = {
         $('#btnGetMenu').click(function () {
             menuState.html('获取菜单中...');
             $.getJSON('/Menu/GetMenu?t=' + Math.random(), { token: senparc.menu.token }, function (json) {
-                alert(json.menu);
-                /*
                  if (json.menu) {
                      $(':input[id^=menu_button]:not([id$=_type])').val('');
                      $('#buttonDetails:input').val('');
@@ -149,7 +147,7 @@ senparc.menu = {
                      menuState.html('菜单获取已完成');
                  } else {
                      menuState.html(json.error || '执行过程有错误，请检查！');
-                 }*/
+                 }
             });
         });
 
