@@ -15,6 +15,26 @@
       "provider": "cdnjs",
       "library": "font-awesome@5.13.0",
       "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jquery-weui@1.2.1",
+      "destination": "wwwroot/lib/jquery-weui/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jquery.form@4.2.2",
+      "destination": "wwwroot/lib/jquery.form/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "weui@2.3.0",
+      "destination": "wwwroot/lib/weui/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "fastclick@1.0.6",
+      "destination": "wwwroot/lib/fastclick/"
     }
   ]
 }
