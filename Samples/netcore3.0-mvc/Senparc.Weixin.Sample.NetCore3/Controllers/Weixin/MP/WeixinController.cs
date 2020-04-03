@@ -246,8 +246,8 @@ namespace Senparc.Weixin.Sample.NetCore3.Controllers
             await cache.SetAsync(cacheKey, SystemTime.Now);
 
             //演示通过 key 来获取 SenparcWeixinSetting 储存信息，如果有明确的WeixinAppId，这一步也可以省略
-            var setting1 = Weixin.Config.SenparcWeixinSetting.Items["Default"];
-            var setting2 = Weixin.Config.SenparcWeixinSetting.Items["第二个公众号"];
+            var setting1 = Config.SenparcWeixinSetting.Items["Default"];
+            var setting2 = Config.SenparcWeixinSetting.Items["第二个公众号"];
 
             var sb = new StringBuilder();
 

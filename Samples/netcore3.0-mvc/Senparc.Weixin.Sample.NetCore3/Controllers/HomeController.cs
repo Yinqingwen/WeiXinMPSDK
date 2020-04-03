@@ -149,7 +149,7 @@ namespace Senparc.Weixin.Sample.NetCore3.Controllers
                 TempData["NewestDocumentVersion"] = new Senparc.Weixin.MP.Sample.CommonService.Download.Config();
             }
 
-            Weixin.WeixinTrace.SendCustomLog("首页被访问",
+            WeixinTrace.SendCustomLog("首页被访问",
                                 string.Format("Url：{0}\r\nIP：{1}", Request.Host, HttpContext.Connection.RemoteIpAddress));
             //or use Header: REMOTE_ADDR
 

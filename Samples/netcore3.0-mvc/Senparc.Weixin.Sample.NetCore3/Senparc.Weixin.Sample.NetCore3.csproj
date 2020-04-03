@@ -43,6 +43,10 @@
     <PackageReference Include="Senparc.NeuChar.AspNet" Version="0.2.105" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
     <PackageReference Include="System.IO.Compression.ZipFile" Version="4.3.0" />
+    <PackageReference Include="System.ServiceModel.Duplex" Version="4.4.*" />
+    <PackageReference Include="System.ServiceModel.Http" Version="4.4.*" />
+    <PackageReference Include="System.ServiceModel.NetTcp" Version="4.4.*" />
+    <PackageReference Include="System.ServiceModel.Security" Version="4.4.*" />
     <PackageReference Include="ZXing.Net" Version="0.16.4" />
   </ItemGroup>
 
@@ -77,7 +81,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Client\Yd\" />
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

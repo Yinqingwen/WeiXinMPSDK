@@ -27,6 +27,8 @@ using Senparc.Weixin.MP.Entities.Menu;
 using Senparc.CO2NET.HttpUtility;
 using Senparc.Weixin.MP;
 using Senparc.Weixin.MP.Containers;
+using System.Net;
+using System.Net.Sockets;
 
 namespace Senparc.Weixin.Sample.NetCore3.Controllers
 {
@@ -46,7 +48,7 @@ namespace Senparc.Weixin.Sample.NetCore3.Controllers
                 {
                     return IP;
                 }
-
+                /*
                 var url =
                     "https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=0&rsv_idx=1&tn=baidu&wd=IP&rsv_pq=db4eb7d40002dd86&rsv_t=14d7uOUvNnTdrhnrUx0zdEVTPEN8XDq4aH7KkoHAEpTIXkRQkUD00KJ2p94&rqlang=cn&rsv_enter=1&rsv_sug3=2&rsv_sug1=2&rsv_sug7=100&rsv_sug2=0&inputT=875&rsv_sug4=875";
 
@@ -57,6 +59,21 @@ namespace Senparc.Weixin.Sample.NetCore3.Controllers
                     IP = result.Value;
                 }
                 return IP;
+                */
+                string HostName = Dns.GetHostName(); //得到主机名
+                IPHostEntry IpEntry = Dns.GetHostEntry(HostName);
+                for (int i = 0; i < IpEntry.AddressList.Length; i++)
+                {
+                    //从IP地址列表中筛选出IPv4类型的IP地址
+                   //AddressFamily.InterNetwork表示此IP为IPv4,
+                   //AddressFamily.InterNetworkV6表示此地址为IPv6类型
+                   if (IpEntry.AddressList[i].AddressFamily == AddressFamily.InterNetwork)
+                   {
+                        return IpEntry.AddressList[i].ToString();
+                    }
+                 }
+
+                 return "";
             }
             catch
             {
@@ -201,10 +218,14 @@ namespace Senparc.Weixin.Sample.NetCore3.Controllers
 
         public ActionResult GetMenu(string token)
         {
+            if (String.IsNullOrWhiteSpace(token))
+            {
+                token = GetToken();
+            }
             try
             {
-                //var result = CommonApi.GetMenu(token);
-                var result = CommonApi.GetMenu(AppId);
+                var result = CommonApi.GetMenu(token);
+                //var result = CommonApi.GetMenu(AppId);
                 if (result == null)
                 {
                     return Json(new { error = "菜单不存在或验证失败！" }, new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() });

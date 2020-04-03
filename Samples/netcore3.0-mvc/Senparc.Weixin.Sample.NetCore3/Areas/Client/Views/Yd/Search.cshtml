@@ -1,0 +1,128 @@
+﻿
+@{
+    ViewData["Title"] = "运单查询";
+    Layout = "~/Views/Shared/_LayoutWeuiPlus.cshtml";
+}
+@section css
+{
+    <style type="text/css">
+        .search-input {
+            width: 60%;
+        }
+    </style>
+}
+<div class="weui-search-bar">
+    <input type="search" class="search-input" id="search" placeholder="7位运单号"><a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_primary" id="searchbtn"><i class="icon icon-4"></i>运单查询</a>
+</div>
+<div class="weui-loadmore" id="loadmore" style="display:none;">
+    <i class="weui-loading"></i>
+    <span class="weui-loadmore__tips">正在查询运单数据</span>
+</div>
+<div class="weui-loadmore weui-loadmore_line" id="error" style="display:none;">
+    <span class="weui-loadmore__tips">暂未查到运单数据，请稍后再试！！！</span>
+</div>
+<div class="weui-form-preview" style="display:none;" id="YdView">
+    <span id="state" style="display:none;"></span>
+    <span id="msg" style="display:none;"></span>
+    <div class="weui-form-preview__hd">
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">运单号码</label>
+            <em class="weui-form-preview__value" id="运单号"></em>
+        </div>
+    </div>
+    <div class="weui-form-preview__bd">
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">发站网点</label>
+            <span class="weui-form-preview__value" id="发站网点"></span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">提货网点</label>
+            <span class="weui-form-preview__value" id="提货网点"></span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">目的地</label>
+            <span class="weui-form-preview__value" id="目的地"></span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">付款方式</label>
+            <span class="weui-form-preview__value" id="付款方式"></span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">应收款</label>
+            <span class="weui-form-preview__value" id="应收款"></span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">托运日期</label>
+            <span class="weui-form-preview__value" id="托运日期"></span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">中转方式</label>
+            <span class="weui-form-preview__value" id="中转方式"></span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">状态</label>
+            <span class="weui-form-preview__value" id="状态"></span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">合同</label>
+            <span class="weui-form-preview__value" id="合同"></span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">持卡人</label>
+            <span class="weui-form-preview__value" id="持卡人"></span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">卡号</label>
+            <span class="weui-form-preview__value" id="卡号"></span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">发站电话</label>
+            <span class="weui-form-preview__value" id="发站电话"></span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">到站电话</label>
+            <span class="weui-form-preview__value" id="到站电话"></span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">放代点</label>
+            <span class="weui-form-preview__value" id="放代点"></span>
+        </div>
+    </div>
+    <div class="weui-form-preview__ft">
+        <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">操作</a>
+    </div>
+</div>
+@section script
+{
+    <script>
+        $("#searchbtn").click(function () {
+            //获取单号
+            var dh = $("#search").val();
+            //检查运单号码长度
+            if (dh.length != 7) {
+                alert("运单号码应为7位，请检查后再试");
+                $("#search").focus();
+                return;
+            }
+            //显示查询状态条
+            $("#loadmore").show();
+            //查询运单数据
+            $.getJSON("/Client/Yd/SearchYd", { id: dh }, function (json) {
+                //数据结果
+                if (parseInt(json.state)) {
+                    //查到数据
+                    $.each(json, function (name, value) {
+                        $("#" + name).text(value);
+                    });
+                    $("#YdView").show();
+                } else {
+                    //未查到
+                    $("#error span").text(json.msg);     //显示错误信息
+                    $("#error").show();
+                }
+                //没有数据
+                $("#loadmore").hide();
+            });
+        });
+    </script>
+}

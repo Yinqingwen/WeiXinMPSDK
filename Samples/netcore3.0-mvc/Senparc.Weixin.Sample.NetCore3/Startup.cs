@@ -396,9 +396,16 @@ namespace Senparc.Weixin.Sample.NetCore3
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapAreaControllerRoute(
+                    name: "areas", "areas",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                
+                //endpoints.MapRazorPages();
             });
 
             // π”√ SignalR£®.NET Core 3.0£©                                                      -- DPBMARK WebSocket
