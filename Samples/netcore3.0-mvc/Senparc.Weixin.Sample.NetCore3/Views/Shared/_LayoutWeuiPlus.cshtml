@@ -1,9 +1,16 @@
-﻿<!DOCTYPE html>
+﻿@functions{
+    public string GetMPname()
+    {
+        return string.IsNullOrWhiteSpace(Configuration.GetSection("SystemSetting")["MPName"]) ? "Manager" : Configuration.GetSection("SystemSetting")["MPName"];
+    }
+}
+
+<!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>@ViewBag.Title</title>
+    <title>@ViewBag.Title - @GetMPname()</title>
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/weui/style/weui.css" />
         <link rel="stylesheet" href="~/css/weuix.css" />

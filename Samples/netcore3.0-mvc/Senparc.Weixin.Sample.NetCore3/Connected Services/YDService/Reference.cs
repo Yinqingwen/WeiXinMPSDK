@@ -16,6 +16,10 @@ namespace YDService
     public interface ServiceSoap
     {
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://sckp.com/Add_Info", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        System.Threading.Tasks.Task<string> Add_InfoAsync(string RecTel, string Recer, string Varo, string Num, string Ds, string City, string Sender, string SendTel);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://sckp.com/To_Info", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<string> To_InfoAsync(string name, string comp, string Danhao);
@@ -82,6 +86,11 @@ namespace YDService
         public ServiceSoapClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress)
         {
+        }
+        
+        public System.Threading.Tasks.Task<string> Add_InfoAsync(string RecTel, string Recer, string Varo, string Num, string Ds, string City, string Sender, string SendTel)
+        {
+            return base.Channel.Add_InfoAsync(RecTel, Recer, Varo, Num, Ds, City, Sender, SendTel);
         }
         
         public System.Threading.Tasks.Task<string> To_InfoAsync(string name, string comp, string Danhao)

@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "运单查询";
     Layout = "~/Views/Shared/_LayoutWeuiPlus.cshtml";
 }
@@ -9,19 +8,27 @@
         .search-input {
             width: 60%;
         }
+
+        #loadmore,#error,#YdView{
+            display:none
+        }
     </style>
 }
+<!--搜索条-->
 <div class="weui-search-bar">
-    <input type="search" class="search-input" id="search" placeholder="7位运单号"><a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_primary" id="searchbtn"><i class="icon icon-4"></i>运单查询</a>
+    <input type="tel" class="search-input" id="search" placeholder="7位运单号"><a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_primary" id="searchbtn"><i class="icon icon-4"></i>运单查询</a>
 </div>
-<div class="weui-loadmore" id="loadmore" style="display:none;">
+<!--加载条-->
+<div class="weui-loadmore" id="loadmore">
     <i class="weui-loading"></i>
     <span class="weui-loadmore__tips">正在查询运单数据</span>
 </div>
-<div class="weui-loadmore weui-loadmore_line" id="error" style="display:none;">
+<!--错误信息条-->
+<div class="weui-loadmore weui-loadmore_line" id="error">
     <span class="weui-loadmore__tips">暂未查到运单数据，请稍后再试！！！</span>
 </div>
-<div class="weui-form-preview" style="display:none;" id="YdView">
+<!--运单信息-->
+<div class="weui-form-preview" id="YdView">
     <span id="state" style="display:none;"></span>
     <span id="msg" style="display:none;"></span>
     <div class="weui-form-preview__hd">
@@ -95,6 +102,10 @@
 @section script
 {
     <script>
+        /*搜索条获得焦点，隐藏其他*/
+        $("#search").focusin(function () {
+            $("#loadmore,#error,#YdView").hide();
+        });
         $("#searchbtn").click(function () {
             //获取单号
             var dh = $("#search").val();

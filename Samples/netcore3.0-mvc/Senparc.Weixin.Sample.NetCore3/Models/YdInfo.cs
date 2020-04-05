@@ -144,4 +144,80 @@ namespace Senparc.Weixin.Sample.NetCore3.Models
             return ydInfo;
         }
     }
+
+    /// <summary>
+    /// 发货运单信息类
+    /// </summary>
+    public class FydInfo 
+    {
+        /// <summary>
+        /// 发货单状态
+        /// </summary>
+        public string state { get; set; }
+
+        /// <summary>
+        /// 发货单信息
+        /// </summary>
+        public string msg { get; set; } 
+        
+        /// <summary>
+        /// 收货人电话
+        /// </summary>
+        public string 收货人电话 { get; set; }
+
+        /// <summary>
+        /// 收货人姓名
+        /// </summary>
+        public string 收货人 { get; set; }
+        
+        /// <summary>
+        /// 货名
+        /// </summary>
+        public string 货名 { get; set; }
+        
+        /// <summary>
+        /// 件数
+        /// </summary>
+        public string 件数 { get; set; }
+        
+        /// <summary>
+        /// 城市
+        /// </summary>
+        public string 城市 { get; set; }
+        
+        /// <summary>
+        /// 托运人
+        /// </summary>
+        public string 托运人 { get; set; }
+
+        /// <summary>
+        /// 托运人电话
+        /// </summary>
+        public string 托运人电话 { get; set; }
+
+        public FydInfo() 
+        { 
+        }
+
+        public FydInfo GetFydInfo(string state)
+        {
+            FydInfo result = new FydInfo();
+
+            state = state.Replace('#',',');
+            string[] sArray = state.Split(',');
+
+            //数据赋值
+            foreach (string substr in sArray)
+            {
+                if (!string.IsNullOrWhiteSpace(substr))
+                {
+                    string[] ssArry = substr.Split('=');
+
+                    result.GetType().GetProperty(ssArry[0]).SetValue(result, ssArry[1]);
+                }
+            }
+
+            return result;
+        }
+    }
 }

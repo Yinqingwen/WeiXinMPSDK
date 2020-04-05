@@ -18,11 +18,6 @@
     },
     {
       "provider": "cdnjs",
-      "library": "jquery-weui@1.2.1",
-      "destination": "wwwroot/lib/jquery-weui/"
-    },
-    {
-      "provider": "cdnjs",
       "library": "jquery.form@4.2.2",
       "destination": "wwwroot/lib/jquery.form/"
     },

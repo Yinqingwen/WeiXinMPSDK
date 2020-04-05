@@ -1,0 +1,161 @@
+﻿@{
+    ViewData["Title"] = "发货";
+    Layout = "~/Views/Shared/_LayoutWeuiPlus.cshtml";
+}
+<form id="Yd-form" method="post" asp-area="Client" asp-controller="Yd" asp-action="Create">
+    <div class="weui-cells__title">发货运单</div>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label">收货人电话</label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input req" pattern="[0-9]*" placeholder="请输入收货人电话号码" type="tel" id="rectel" name="rectel">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label">收货人</label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" placeholder="请输入收货人姓名" type="text" id="recer" name="recer">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label">货物名称</label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" placeholder="请输入货物名称" type="text" id="varo" name="varo">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label">件数</label>
+            </div>
+            <div class="weui-cell__ft">
+                <div class="weui-count">
+                    <a class="weui-count__btn weui-count__decrease"></a>
+                    <input class="weui-count__number" type="number" value="1" id="num" name="num">
+                    <a class="weui-count__btn weui-count__increase"></a>
+                </div>
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label">代收金额</label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" value="" placeholder="500.00" type="number" id="ds" name="ds">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label">目的城市</label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" value="" placeholder="请输入目的城市" type="text" id="city" name="city">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label">发货人</label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" value="" placeholder="请输入发货人姓名" type="text" id="sender" name="sender">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label">发货人电话</label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" value="" placeholder="请输入发货人电话" type="tel" id="sendtel" name="sendtel">
+            </div>
+        </div>
+    </div>
+    <div class="weui-btn-area">
+        <a class="weui-btn weui-btn_primary" href="javascript:" id="btn" style="width:100%;">发货</a>
+    </div>
+</form>
+
+@section script
+{
+    @*界面校验类*@
+    <script type="text/javascript" src="~/js/Validate.js"></script>
+    <script type="text/javascript">
+        //数值器增减函数
+        var MAX = 99, MIN = 1;
+        $('.weui-count__decrease').click(function (e) {
+            var $input = $(e.currentTarget).parent().find('.weui-count__number');
+            var number = parseInt($input.val() || "0") - 1
+            if (number < MIN) number = MIN;
+            $input.val(number)
+        })
+        $('.weui-count__increase').click(function (e) {
+            var $input = $(e.currentTarget).parent().find('.weui-count__number');
+            var number = parseInt($input.val() || "0") + 1
+            if (number > MAX) number = MAX;
+            $input.val(number)
+        })
+        //住界面
+        $(function () {
+            //为空校验设置
+            var requireArr = [
+                {
+                    id: "rectel",
+                    errmsg: "收货人电话号码不能为空！！！"
+                },
+                {
+                    id: "recer",
+                    errmsg: "收货人姓名不能为空！！！"
+                },
+                {
+                    id: "varo",
+                    errmsg: "货物名称不能为空！！！"
+                },
+                {
+                    id: "city",
+                    errmsg: "目的城市不能为空！！！"
+                },
+                {
+                    id: "sender",
+                    errmsg: "发货人姓名不能为空！！！"
+                },
+                {
+                    id: "sendtel",
+                    errmsg: "发货人电话不能为空！！！"
+                }
+            ];
+
+            //发货按钮处理
+            $(document).on("click", "#btn", function () {
+                //校验为空部分
+                $.each(requireArr, function (i, obj) {
+                    Validate.require("#" + obj.id, obj.errmsg);
+                });
+                //校验电话格式
+                Validate.phone("#rectel", "收货人电话号码格式错误！！！");
+                Validate.phone("#sendtel", "发货人电话号码格式错误！！！");
+                //提交数据
+                $("#Yd-form").submit();
+                /*
+                $.confirm("您确认提交发货单？", "发货单提交", function () {
+                    //确认操作
+                    
+                }, function () {
+                    //取消操作
+                });*/
+            })
+
+            //解决表单控件不能回弹 只有微信ios有这个问题
+            $("input,select,textarea").blur(function () {
+                setTimeout(() => {
+                    const scrollHeight = document.documentElement.scrollTop || document.body.scrollTop || 0;
+                    window.scrollTo(0, Math.max(scrollHeight - 1, 0));
+                }, 100);
+            })
+
+        });
+    </script>
+}
