@@ -70,8 +70,9 @@ namespace Senparc.Weixin.Sample.NetCore3.Controllers.Client
 
             FydInfo fydInfo = new FydInfo();
             fydInfo = fydInfo.GetFydInfo(result);
-                        
-            return View("CreateMsg",fydInfo);
+            
+            return Json(fydInfo, new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() });
+            //return View("CreateMsg",fydInfo);
         }
     }
 }
