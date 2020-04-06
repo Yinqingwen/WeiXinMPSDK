@@ -1,0 +1,8 @@
+title: 微信公众平台SDK
+description: Senparc.Weixin
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-cayman
+
+gems:
+  - jekyll-mentions
