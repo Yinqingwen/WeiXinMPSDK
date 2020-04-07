@@ -62,7 +62,8 @@
                 <div class="timeline-item-tail"></div>
                 <div class="timeline-item-content">
                     <h4 id="提货网点"></h4>
-                    <p>没有到达时间</p>
+                    <p id="目的地"></p>
+                    <p id="到达"></p>
                     <p>到站电话:<span id="到站电话"></span></p>
                 </div>
             </li>
@@ -70,15 +71,7 @@
                 <div class="timeline-item-color timeline-item-head"></div>
                 <div class="timeline-item-tail"></div>
                 <div class="timeline-item-content">
-                    <h4 id="目的地"></h4>
-                    <p>没有到达时间</p>
-                </div>
-            </li>
-            <li class="timeline-item">
-                <div class="timeline-item-color timeline-item-head"></div>
-                <div class="timeline-item-tail"></div>
-                <div class="timeline-item-content">
-                    <h4>提货时间</h4>
+                    <h4>提货日期</h4>
                     <p id="结算日期"></p>
                     <h6>提货人</h6>
                     <p id="提货人"></p>
@@ -192,6 +185,12 @@
                     //查到数据
                     $.each(json, function (name, value) {
                         $("#" + name).text(value);
+                    });
+                    var elems = $("#托运日期,#配载日期,#结算日期,#付款日期,#汇款日期");
+                    $.each(elems, function (name, value) {
+                        var dt = Date.parse($(value).text());
+                        var ndt = new Date(dt);
+                        $(value).text(ndt.toLocaleDateString());
                     });
                     $("#YdView").show();
                 } else {

@@ -88,6 +88,12 @@
     <Folder Include="Areas\System\Views\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\MP_verify_DjSoTAbBeJYaZgjg.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>
