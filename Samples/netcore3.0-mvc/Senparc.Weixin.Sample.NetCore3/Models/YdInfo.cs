@@ -45,12 +45,12 @@ namespace Senparc.Weixin.Sample.NetCore3.Models
         /// <summary>
         /// 付款方式
         /// </summary>
-        public string 付款方式 { get; set; }
+        /*public string 付款方式 { get; set; }*/
 
         /// <summary>
         /// 应收款
         /// </summary>
-        public string 应收款 { get; set; }
+        /*public string 应收款 { get; set; }*/
 
         /// <summary>
         /// 托运日期
@@ -58,44 +58,39 @@ namespace Senparc.Weixin.Sample.NetCore3.Models
         public string 托运日期 { get; set; }
 
         /// <summary>
-        /// 中转方式
+        /// 配载日期
         /// </summary>
-        public string 中转方式 { get; set; }
+        public string 配载日期 { get; set; }
 
         /// <summary>
-        /// 状态
+        /// 结算日期
         /// </summary>
-        public string 状态 { get; set; }
+        public string 结算日期 { get; set; }
 
         /// <summary>
-        /// 合同
+        /// 提货人
         /// </summary>
-        public string 合同 { get; set; }
+        public string 提货人 { get; set; }
 
         /// <summary>
-        /// 持卡人
+        /// 付款日期
         /// </summary>
-        public string 持卡人 { get; set; }
+        public string 付款日期 { get; set; }
 
         /// <summary>
-        /// 卡号
+        /// 汇款日期
         /// </summary>
-        public string 卡号 { get; set; }
+        public string 汇款日期 { get; set; }
 
         /// <summary>
-        /// 发站电话
+        /// 收款人
         /// </summary>
-        public string 发站电话 { get; set; }
+        public string 收款人 { get; set; }
 
         /// <summary>
         /// 到站电话
         /// </summary>
         public string 到站电话 { get; set; }
-
-        /// <summary>
-        /// 放代点
-        /// </summary>
-        public string 放代点 { get; set; }
 
         /// <summary>
         /// 默认构造函数
@@ -118,7 +113,7 @@ namespace Senparc.Weixin.Sample.NetCore3.Models
             //获取远程数据
             name = string.IsNullOrWhiteSpace(name) ? "胜京物流" : name;
             company = string.IsNullOrWhiteSpace(company) ? "胜京物流" : company;
-            string result = yDServiceClient.To_InfoAsync(name, company, ordernumber).Result.ToString();
+            string result = yDServiceClient.To_InfoAsync(company, ordernumber).Result.ToString();
 
             //调整返回字符串格式
             result = result.Replace('#', '&');

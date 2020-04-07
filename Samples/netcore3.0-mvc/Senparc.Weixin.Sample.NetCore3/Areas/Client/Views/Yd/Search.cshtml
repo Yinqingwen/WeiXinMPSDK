@@ -37,67 +37,135 @@
             <em class="weui-form-preview__value" id="运单号"></em>
         </div>
     </div>
-    <div class="weui-form-preview__bd">
-        <div class="weui-form-preview__item">
-            <label class="weui-form-preview__label">发站网点</label>
-            <span class="weui-form-preview__value" id="发站网点"></span>
-        </div>
-        <div class="weui-form-preview__item">
-            <label class="weui-form-preview__label">提货网点</label>
-            <span class="weui-form-preview__value" id="提货网点"></span>
-        </div>
-        <div class="weui-form-preview__item">
-            <label class="weui-form-preview__label">目的地</label>
-            <span class="weui-form-preview__value" id="目的地"></span>
-        </div>
-        <div class="weui-form-preview__item">
-            <label class="weui-form-preview__label">付款方式</label>
-            <span class="weui-form-preview__value" id="付款方式"></span>
-        </div>
-        <div class="weui-form-preview__item">
-            <label class="weui-form-preview__label">应收款</label>
-            <span class="weui-form-preview__value" id="应收款"></span>
-        </div>
-        <div class="weui-form-preview__item">
-            <label class="weui-form-preview__label">托运日期</label>
-            <span class="weui-form-preview__value" id="托运日期"></span>
-        </div>
-        <div class="weui-form-preview__item">
-            <label class="weui-form-preview__label">中转方式</label>
-            <span class="weui-form-preview__value" id="中转方式"></span>
-        </div>
-        <div class="weui-form-preview__item">
-            <label class="weui-form-preview__label">状态</label>
-            <span class="weui-form-preview__value" id="状态"></span>
-        </div>
-        <div class="weui-form-preview__item">
-            <label class="weui-form-preview__label">合同</label>
-            <span class="weui-form-preview__value" id="合同"></span>
-        </div>
-        <div class="weui-form-preview__item">
-            <label class="weui-form-preview__label">持卡人</label>
-            <span class="weui-form-preview__value" id="持卡人"></span>
-        </div>
-        <div class="weui-form-preview__item">
-            <label class="weui-form-preview__label">卡号</label>
-            <span class="weui-form-preview__value" id="卡号"></span>
-        </div>
-        <div class="weui-form-preview__item">
-            <label class="weui-form-preview__label">发站电话</label>
-            <span class="weui-form-preview__value" id="发站电话"></span>
-        </div>
-        <div class="weui-form-preview__item">
-            <label class="weui-form-preview__label">到站电话</label>
-            <span class="weui-form-preview__value" id="到站电话"></span>
-        </div>
-        <div class="weui-form-preview__item">
-            <label class="weui-form-preview__label">放代点</label>
-            <span class="weui-form-preview__value" id="放代点"></span>
-        </div>
+    <div class="timeline">
+        <ul>
+            <li class="timeline-item">
+                <div class="timeline-item-color timeline-item-head-first">
+                    <i class="timeline-item-checked   weui-icon-success-no-circle"></i>
+                </div>
+                <div class="timeline-item-tail"></div>
+                <div class="timeline-item-content">
+                    <h4 class="recent" id="发站网点"></h4>
+                    <p class="recent" id="托运日期"></p>
+                </div>
+            </li>
+            <li class="timeline-item">
+                <div class="timeline-item-color timeline-item-head"></div>
+                <div class="timeline-item-tail"></div>
+                <div class="timeline-item-content">
+                    <h4>物流途中</h4>
+                    <p id="配载日期"></p>
+                </div>
+            </li>
+            <li class="timeline-item">
+                <div class="timeline-item-color timeline-item-head"></div>
+                <div class="timeline-item-tail"></div>
+                <div class="timeline-item-content">
+                    <h4 id="提货网点"></h4>
+                    <p>没有到达时间</p>
+                    <p>到站电话:<span id="到站电话"></span></p>
+                </div>
+            </li>
+            <li class="timeline-item">
+                <div class="timeline-item-color timeline-item-head"></div>
+                <div class="timeline-item-tail"></div>
+                <div class="timeline-item-content">
+                    <h4 id="目的地"></h4>
+                    <p>没有到达时间</p>
+                </div>
+            </li>
+            <li class="timeline-item">
+                <div class="timeline-item-color timeline-item-head"></div>
+                <div class="timeline-item-tail"></div>
+                <div class="timeline-item-content">
+                    <h4>提货时间</h4>
+                    <p id="结算日期"></p>
+                    <h6>提货人</h6>
+                    <p id="提货人"></p>
+                </div>
+            </li>
+            <li class="timeline-item">
+                <div class="timeline-item-color timeline-item-head"></div>
+                <div class="timeline-item-tail"></div>
+                <div class="timeline-item-content">
+                    <h4>付款日期</h4>
+                    <p id="付款日期"></p>
+                </div>
+            </li>
+            <li class="timeline-item">
+                <div class="timeline-item-color timeline-item-head"></div>
+                <div class="timeline-item-tail hide"></div>
+                <div class="timeline-item-content">
+                    <h4>汇款日期</h4>
+                    <p id="汇款日期"></p>
+                    <h6>收款人</h6>
+                    <p id="收款人"></p>
+                </div>
+            </li>
+        </ul>
     </div>
-    <div class="weui-form-preview__ft">
-        <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">操作</a>
-    </div>
+    @*
+        <div class="weui-form-preview__bd">
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">发站网点</label>
+                <span class="weui-form-preview__value" id="发站网点"></span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">提货网点</label>
+                <span class="weui-form-preview__value" id="提货网点"></span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">目的地</label>
+                <span class="weui-form-preview__value" id="目的地"></span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">付款方式</label>
+                <span class="weui-form-preview__value" id="付款方式"></span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">应收款</label>
+                <span class="weui-form-preview__value" id="应收款"></span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">托运日期</label>
+                <span class="weui-form-preview__value" id="托运日期"></span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">中转方式</label>
+                <span class="weui-form-preview__value" id="中转方式"></span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">状态</label>
+                <span class="weui-form-preview__value" id="状态"></span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">合同</label>
+                <span class="weui-form-preview__value" id="合同"></span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">持卡人</label>
+                <span class="weui-form-preview__value" id="持卡人"></span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">卡号</label>
+                <span class="weui-form-preview__value" id="卡号"></span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">发站电话</label>
+                <span class="weui-form-preview__value" id="发站电话"></span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">到站电话</label>
+                <span class="weui-form-preview__value" id="到站电话"></span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">放代点</label>
+                <span class="weui-form-preview__value" id="放代点"></span>
+            </div>
+        </div>
+        <div class="weui-form-preview__ft">
+            <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">操作</a>
+        </div>*@
 </div>
 @section script
 {
