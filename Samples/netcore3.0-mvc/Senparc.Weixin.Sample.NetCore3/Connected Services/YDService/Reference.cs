@@ -16,6 +16,10 @@ namespace YDService
     public interface ServiceSoap
     {
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://sckp.com/WX_SY_Recer", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        System.Threading.Tasks.Task<string> WX_SY_RecerAsync(string comp, string CellPhone);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://sckp.com/WX_SearchCust", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<string> WX_SearchCustAsync(string Company, string Wxid);
@@ -26,7 +30,7 @@ namespace YDService
         
         [System.ServiceModel.OperationContractAttribute(Action="http://sckp.com/Add_Info", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<string> Add_InfoAsync(string WXid, string RecTel, string Recer, string Varo, string Num, string Ds, string City, string Sender, string SendTel);
+        System.Threading.Tasks.Task<string> Add_InfoAsync(string RecTel, string Recer, string Varo, string Num, string Ds, string City, string Sender, string SendTel);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://sckp.com/To_Info", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -96,6 +100,11 @@ namespace YDService
         {
         }
         
+        public System.Threading.Tasks.Task<string> WX_SY_RecerAsync(string comp, string CellPhone)
+        {
+            return base.Channel.WX_SY_RecerAsync(comp, CellPhone);
+        }
+        
         public System.Threading.Tasks.Task<string> WX_SearchCustAsync(string Company, string Wxid)
         {
             return base.Channel.WX_SearchCustAsync(Company, Wxid);
@@ -106,9 +115,9 @@ namespace YDService
             return base.Channel.WX_EditCustAsync(Company, Wxid, Name, CellPhone);
         }
         
-        public System.Threading.Tasks.Task<string> Add_InfoAsync(string WXid, string RecTel, string Recer, string Varo, string Num, string Ds, string City, string Sender, string SendTel)
+        public System.Threading.Tasks.Task<string> Add_InfoAsync(string RecTel, string Recer, string Varo, string Num, string Ds, string City, string Sender, string SendTel)
         {
-            return base.Channel.Add_InfoAsync(WXid, RecTel, Recer, Varo, Num, Ds, City, Sender, SendTel);
+            return base.Channel.Add_InfoAsync(RecTel, Recer, Varo, Num, Ds, City, Sender, SendTel);
         }
         
         public System.Threading.Tasks.Task<string> To_InfoAsync(string comp, string Danhao)

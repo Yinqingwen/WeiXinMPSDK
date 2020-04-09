@@ -143,6 +143,17 @@
                     errmsg: "不能超过5个汉字"
                 }
             ];
+            //收货电话信息查询
+            $("#rectel").blur(function () {
+                $.showLoading();
+                $.getJSON("/Client/Yd/GetPhoneInfo", { id: $(this).val() }, function (json) {
+                    if (parseInt(json.state)) {
+                        $("#recer").val(json.收货人);
+                        $("#city").val(json.到站城市);
+                    }
+                });
+                $.hideLoading();
+            });
 
             //发货按钮处理
             $(document).on("click", "#btn", function () {

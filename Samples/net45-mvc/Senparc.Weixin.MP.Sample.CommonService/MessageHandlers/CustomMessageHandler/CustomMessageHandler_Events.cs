@@ -298,7 +298,7 @@ QQ群：289181996
                 case "Description":
                     {
                         var strongResponseMessage = CreateResponseMessage<ResponseMessageText>();
-                        strongResponseMessage.Content = GetWelcomeInfo();
+                        strongResponseMessage.Content = "欢迎关注胜京物流，公司全体员工将竭诚为您服务！！！"; // GetWelcomeInfo();
                         reponseMessage = strongResponseMessage;
                     }
                     break;
@@ -446,7 +446,7 @@ QQ群：289181996
         public override IResponseMessageBase OnEvent_SubscribeRequest(RequestMessageEvent_Subscribe requestMessage)
         {
             var responseMessage = ResponseMessageBase.CreateFromRequestMessage<ResponseMessageText>(requestMessage);
-            responseMessage.Content = GetWelcomeInfo();
+            responseMessage.Content = "欢迎关注胜京物流，公司全体员工将竭诚为您服务！！！"; //GetWelcomeInfo();
             if (!string.IsNullOrEmpty(requestMessage.EventKey))
             {
                 responseMessage.Content += "\r\n============\r\n场景值：" + requestMessage.EventKey;

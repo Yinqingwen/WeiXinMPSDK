@@ -134,17 +134,17 @@
                                 case "结算日期":
                                     $("#two,#three,#four").hide();
                                     $("#one .timeline-item-tail").addClass("hide");
-                                    return;
+                                    break;
                                 //处理付款日期
                                 case "付款日期":
                                     $("#three,#four").hide();
                                     $("#two .timeline-item-tail").addClass("hide");
-                                    return;
+                                    break;
                                 //处理汇款日期
                                 case "汇款日期":
                                     $("#four").hide();
                                     $("#three .timeline-item-tail").addClass("hide");
-                                    return;
+                                    break;
                                 default:
                                     //$(this).text(dt);
                             }

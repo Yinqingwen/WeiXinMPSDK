@@ -215,4 +215,66 @@ namespace Senparc.Weixin.Sample.NetCore3.Models
             return result;
         }
     }
+
+    /// <summary>
+    /// 根据电话号码查询收货人信息
+    /// </summary>
+    public class PhoneInfo 
+    { 
+        /// <summary>
+        /// 查询状态，1为正常，0为错误
+        /// </summary>
+        public string state { get; set; }
+
+        /// <summary>
+        /// 消息
+        /// </summary>
+        public string msg { get; set; }
+
+        /// <summary>
+        /// 收货人
+        /// </summary>
+        public string 收货人 { get; set; }
+
+        /// <summary>
+        /// 到站城市
+        /// </summary>
+        public string 到站城市 { get; set; }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        public PhoneInfo() 
+        { }
+
+        public PhoneInfo GetPhoneInfo(string state)
+        {
+            //链接远程Webservice
+            ServiceSoapClient.EndpointConfiguration endpoit = new YDService.ServiceSoapClient.EndpointConfiguration();
+            ServiceSoapClient yDServiceClient = new YDService.ServiceSoapClient(endpoit);
+
+            //获取远程数据
+            string result = yDServiceClient.WX_SY_RecerAsync("胜京物流", state).Result.ToString(); //.To_InfoAsync(company, ordernumber).Result.ToString();
+
+            PhoneInfo phoneInfo = new PhoneInfo();
+
+            result = result.Replace('#', '&');
+            result = result.Replace("err", "msg");
+            string[] sArray = result.Split('&');
+
+            //数据赋值
+            foreach (string substr in sArray)
+            {
+                if (!string.IsNullOrWhiteSpace(substr))
+                {
+                    string[] ssArry = substr.Split('=');
+
+                    phoneInfo.GetType().GetProperty(ssArry[0]).SetValue(phoneInfo, ssArry[1]);
+                }
+            }
+
+            return phoneInfo;
+        }
+    }
+
 }
