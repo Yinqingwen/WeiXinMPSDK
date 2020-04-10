@@ -5,6 +5,10 @@
     <Version>5.402.2</Version>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="wwwroot\js\site.js" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
@@ -39,8 +43,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
-    <PackageReference Include="Senparc.NeuChar.App" Version="0.8.105" />
-    <PackageReference Include="Senparc.NeuChar.AspNet" Version="0.2.105" />
+    <PackageReference Include="Senparc.NeuChar.App" Version="0.8.106" />
+    <PackageReference Include="Senparc.NeuChar.AspNet" Version="0.2.106" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
     <PackageReference Include="System.IO.Compression.ZipFile" Version="4.3.0" />
     <PackageReference Include="System.ServiceModel.Duplex" Version="4.4.*" />
@@ -82,6 +86,16 @@
 
   <ItemGroup>
     <WCFMetadata Include="Connected Services" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\System\Views\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\MP_verify_DjSoTAbBeJYaZgjg.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
