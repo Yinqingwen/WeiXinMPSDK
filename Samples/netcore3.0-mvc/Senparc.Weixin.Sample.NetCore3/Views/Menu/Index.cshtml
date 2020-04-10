@@ -1,0 +1,281 @@
+﻿@model Senparc.Weixin.MP.Entities.GetMenuResult
+@{
+    ViewData["Title"] = "自定义菜单工具";
+    Layout = "~/Views/Shared/_LayoutSbAdmin2.cshtml";
+}
+<!--主页面容器-->
+<div class="container-fluid">
+    <p>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample-tools" aria-expanded="false" aria-controls="collapseExample-tools">
+            点我了解自定义菜单工具
+        </button>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            点我了解自定义菜单规则
+        </button>
+    </p>
+    <div class="collapse" id="collapseExample-tools">
+        <div class="card card-body">
+            <p class="control-p">注：</p>
+            <p class="control-p">1.使用菜单需要成为“服务号”，或通过认证的“订阅号”。到微信后台【高级功能>开发模式】下获取信息</p>
+            <p class="control-p">2.这里的Token已经使用AccessTokenContainer管理起来，有效期内不会重复获取，过了有效期自动获取。也就是说如果已经在本网页上获取一次，接下去只需要提供AppId即可（直到服务器重启或队列过长被清理）</p>
+            <p class="control-p">3.如果对应公众号后台已经启用IP白名单，请添加本服务器的IP至白名单本机IP：<span class="bold red">@ViewData["IP"]。</span></p>
+        </div>
+    </div>
+    <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+            <h3>使用说明及规则，请仔细阅读</h3>
+            <ul>
+                <li>官方要求：一级菜单按钮个数为1-3个</li>
+                <li>官方要求：如果设置了二级菜单，子按钮个数为1-5个</li>
+                <li>官方要求：按钮描述，即按钮名字，不超过16个字节，子菜单不超过40个字节</li>
+                <li>如果name不填，此按钮将被忽略</li>
+                <li>如果一级菜单为空，该列所有设置的二级菜单都会被忽略</li>
+                <li>key仅在SingleButton（单击按钮，无下级菜单）的状态下设置，如果此按钮有下级菜单，key将被忽略</li>
+                <li>所有二级菜单都为SingleButton</li>
+                <li>如果要快速看到微信上的菜单最新状态，需要重新关注，否则需要静静等待N小时</li>
+            </ul>
+        </div>
+    </div>
+    <div class="alert alert-secondary" role="alert" id="menuState"></div>
+    <!--行容器-->
+    <div class="row">
+        <!--菜单界面容器-->
+        <div class="col">
+            <!-- Basic Card Example -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">编辑工具</h6>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("CreateMenu", "Menu", FormMethod.Post, new { id = "form_Menu" }))
+                    {
+                    <div class="table-responsive">
+                        <table class="table table-sm" id="menuTable">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th class="text-center">第一列</th>
+                                    <th class="text-center">第二列</th>
+                                    <th class="text-center">第三列</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < 6; i++)
+                                    {
+                                        var isRootMenu = i == 5;
+                                <tr id="@(isRootMenu ? "subMenuRow_" + i : "rootMenuRow")">
+                                    <td class="menuRowTip @(isRootMenu?"rootMenu":"")">
+                                        @(isRootMenu ? "一级菜单按钮" : ("二级菜单No." + (i + 1)))
+                                    </td>
+                                    @for (int j = 0; j < 3; j++)
+                                                {
+                                                    var namePrefix = isRootMenu ? string.Format("menu.button[{0}]", j) : string.Format("menu.button[{0}].sub_button[{1}]", j, i);
+                                                    var idPrefix = isRootMenu ? string.Format("menu_button{0}", j) : string.Format("menu_button{0}_sub_button{1}", j, i);
+                                    <td>
+                                        <input type="hidden" class="control-input" name="@(namePrefix).key" id="@(idPrefix)_key" />
+                                        <input type="hidden" class="control-input" name="@(namePrefix).type" id="@(idPrefix)_type" value="click" />
+                                        <input type="hidden" class="control-input" name="@(namePrefix).url" id="@(idPrefix)_url" />
+                                        <input type="hidden" class="control-input" name="@(namePrefix).appid" id="@(idPrefix)_appid" />
+                                        <input type="hidden" class="control-input" name="@(namePrefix).pagepath" id="@(idPrefix)_pagepath" />
+                                        <input type="hidden" class="control-input" name="@(namePrefix).media_id" id="@(idPrefix)_mediaid" />
+                                        <input type="text" class="form-control border-0 border-bottom-primary" name="@(namePrefix).name" id="@(idPrefix)_name" data-i="@i" data-j="@j" @Html.Raw(isRootMenu ? string.Format(@"data-root=""{0}""", j) : "") />
+                                    </td>
+                                                }
+                                </tr>
+                                    }
+                            </tbody>
+                        </table>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <!-- Basic Card Example -->
+                    <div class="card shadow mb-4" id="buttonDetails">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">按钮其他参数</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label for="buttonDetails_name" class="col-sm-2 col-form-label col-form-label-sm">Name:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-sm" id="buttonDetails_name" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="buttonDetails_name" class="col-sm-2 col-form-label col-form-label-sm">Type:</label>
+                                <div class="col-sm-10">
+                                    <select id="buttonDetails_type" class="form-control form-control-sm">
+                                        <option value="click" selected="selected">点击事件（传回服务器）</option>
+                                        <option value="view">访问网页（直接跳转）</option>
+                                        <option value="miniprogram">小程序（直接跳转）</option>
+                                        <option value="location_select">弹出地理位置选择器</option>
+                                        <option value="pic_photo_or_album">弹出拍照或者相册发图</option>
+                                        <option value="pic_sysphoto">弹出系统拍照发图</option>
+                                        <option value="pic_weixin">弹出微信相册发图器</option>
+                                        <option value="scancode_push">扫码推事件</option>
+                                        <option value="scancode_waitmsg">扫码推事件且弹出“消息接收中”提示框</option>
+                                        <option value="media_id">下发消息（除文本消息）</option>
+                                        <option value="view_limited">跳转图文消息URL</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row" id="buttonDetails_key_area">
+                                <label for="buttonDetails_key" class="col-sm-2 col-form-label col-form-label-sm">Key:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-sm" id="buttonDetails_key">
+                                </div>
+                            </div>
+                            <div class="form-group row" id="buttonDetails_url_area">
+                                <label for="buttonDetails_url" class="col-sm-2 col-form-label col-form-label-sm">Url:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-sm" id="buttonDetails_url">
+                                </div>
+                            </div>
+                            <div class="form-group row" id="buttonDetails_miniprogram_appid_area">
+                                <label for="buttonDetails_miniprogram_appid" class="col-sm-2 col-form-label col-form-label-sm">小程序AppId:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-sm" id="buttonDetails_miniprogram_appid">
+                                </div>
+                            </div>
+                            <div class="form-group row" id="buttonDetails_miniprogram_pagepath_area">
+                                <label for="buttonDetails_miniprogram_pagepath" class="col-sm-2 col-form-label col-form-label-sm">小程序PagePath:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-sm" id="buttonDetails_miniprogram_pagepath">
+                                </div>
+                            </div>
+                            <div class="form-group row" id="buttonDetails_mediaId_area">
+                                <label for="buttonDetails_mediaId" class="col-sm-2 col-form-label col-form-label-sm">MediaId:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-sm" id="buttonDetails_mediaId">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer" id="rootButtonNotice">
+                            如果还有下级菜单请忽略上述Type和Key、Url等参数。
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow mb-4" id="addConditionalArea">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">个性化菜单设置</h6>
+                            <small class="ml-2">提示：如果所有字段都留空，则使用普通自定义菜单，如果任何一个条件有值，则使用个性化菜单接口</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label for="MenuMatchRule.group_id" class="col-sm-2 col-form-label col-form-label-sm">group_id:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-sm" id="MenuMatchRule.group_id" name="MenuMatchRule.group_id">
+                                </div>
+                                <small id="passwordHelpBlock" class="form-text text-muted">
+                                    用户分组id，可通过用户分组管理接口获取，不填则不做匹配
+                                </small>
+                            </div>
+                            <div class="form-group row">
+                                <label for="MenuMatchRule.sex" class="col-sm-2 col-form-label col-form-label-sm">sex:</label>
+                                <div class="col-sm-10">
+                                    <select id="MenuMatchRule.sex" name="MenuMatchRule.sex" class="form-control form-control-sm">
+                                        <option value="0" selected="selected"></option>
+                                        <option value="1">男</option>
+                                        <option value="2">女</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="MenuMatchRule.country" class="col-sm-2 col-form-label col-form-label-sm">country:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-sm" id="MenuMatchRule.country" name="MenuMatchRule.country" placeholder="国家信息">
+                                </div>
+                                <small id="passwordHelpBlock" class="form-text text-muted">
+                                    国家信息，是用户在微信中设置的地区，具体请参考地区信息表
+                                </small>
+                            </div>
+                            <div class="form-group row">
+                                <label for="MenuMatchRule.province" class="col-sm-2 col-form-label col-form-label-sm">province</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-sm" id="MenuMatchRule.province" name="MenuMatchRule.province" placeholder="省份信息">
+                                </div>
+                                <small id="passwordHelpBlock" class="form-text text-muted">
+                                    省份信息，是用户在微信中设置的地区，具体请参考地区信息表
+                                </small>
+                            </div>
+                            <div class="form-group row">
+                                <label for="MenuMatchRule.city" class="col-sm-2 col-form-label col-form-label-sm">city</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-sm" id="MenuMatchRule.city" name="MenuMatchRule.city" placeholder="城市信息">
+                                </div>
+                                <small id="passwordHelpBlock" class="form-text text-muted">
+                                    省城市信息，是用户在微信中设置的地区，具体请参考地区信息表
+                                </small>
+                            </div>
+                            <div class="form-group row">
+                                <label for="MenuMatchRule.client_platform_type" class="col-sm-2 col-form-label col-form-label-sm">client_platform_type:</label>
+                                <div class="col-sm-10">
+                                    <select id="MenuMatchRule.client_platform_type" name="MenuMatchRule.client_platform_type" class="form-control form-control-sm">
+                                        <option value="0" selected="selected"></option>
+                                        <option value="1">IOS</option>
+                                        <option value="2">Android</option>
+                                        <option value="3">Others</option>
+                                    </select>
+                                    <small id="passwordHelpBlock" class="form-text text-muted">
+                                        客户端版本，当前只具体到系统型号：IOS(1), Android(2),Others(3)，不填则不做匹配
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group" id="reveiveJSON">
+        <label for="txtReveiceJSON">接收菜单JSON</label>
+        <textarea class="form-control" id="txtReveiceJSON" rows="3"></textarea>
+    </div>
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-primary" id="submitJsonMenu">使用此 JSON 直接更新到服务器</button>
+        <button type="button" class="btn btn-primary" id="btnGetMenu">获取当前菜单</button>
+        <button type="button" class="btn btn-primary" id="submitMenu">更新到服务器</button>
+        <button type="button" class="btn btn-primary" id="btnDeleteMenu">删除菜单</button>
+    </div>
+    <div class="form-row">
+        <div class="col">
+            <input id="tokenStr" name="token" type="text" class="form-control" readonly>
+        </div>
+        <div class="col">
+            <input type="text" id="menuLogin_AppId" class="form-control">
+        </div>
+        <div class="col">
+            <input type="text" id="menuLogin_AppSecret" class="form-control">
+        </div>
+        <div class="col">
+            <input type="text" id="menuLogin_OldToken" class="form-control">
+        </div>
+    </div>
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-secondary" id="btnResetAccessToken">重设 Token</button>
+        <button type="button" class="btn btn-secondary" id="menuLogin_Submit">获取AccessToken</button>
+        <button type="button" class="btn btn-secondary" id="menuLogin_SubmitOldToken">直接使用</button>
+    </div>
+</div>
+@section script
+{
+    <environment names="Development">
+        <script type="text/javascript" src="~/lib/jquery.form/jquery.form.js"></script>
+        <script type="text/javascript" src="~/Scripts/senparc.menu.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script type="text/javascript" src="~/lib/jquery.form/jquery.form.min.js"></script>
+        <script type="text/javascript" src="~/Scripts/senparc.menu.js"></script>
+    </environment>
+    <script>
+        $().ready(function () {
+            senparc.menu.init();
+        });
+    </script>
+}

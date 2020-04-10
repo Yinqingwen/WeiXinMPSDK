@@ -1,0 +1,167 @@
+﻿@{
+    ViewData["Title"] = "运单查询";
+    Layout = "~/Views/Shared/_LayoutWeuiPlus.cshtml";
+}
+@section css
+{
+    <style type="text/css">
+        .search-input {
+            width: 60%;
+        }
+
+        #loadmore,#error,#YdView{
+            display:none
+        }
+    </style>
+}
+<!--搜索条-->
+<div class="weui-search-bar">
+    <input type="tel" class="search-input" id="search" placeholder="7位运单号"><a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_primary" id="searchbtn"><i class="icon icon-4"></i>运单查询</a>
+</div>
+<!--加载条-->
+<div class="weui-loadmore" id="loadmore">
+    <i class="weui-loading"></i>
+    <span class="weui-loadmore__tips">正在查询运单数据</span>
+</div>
+<!--错误信息条-->
+<div class="weui-loadmore weui-loadmore_line" id="error">
+    <span class="weui-loadmore__tips">暂未查到运单数据，请稍后再试！！！</span>
+</div>
+<!--运单信息-->
+<div class="weui-form-preview" id="YdView">
+    <span id="state" style="display:none;"></span>
+    <span id="msg" style="display:none;"></span>
+    <div class="weui-form-preview__hd">
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">运单号码</label>
+            <em class="weui-form-preview__value" id="运单号"></em>
+        </div>
+    </div>
+    <div class="timeline">
+        <ul>
+            <li class="timeline-item">
+                <div class="timeline-item-color timeline-item-head-first">
+                    <i class="timeline-item-checked   weui-icon-success-no-circle"></i>
+                </div>
+                <div class="timeline-item-tail"></div>
+                <div class="timeline-item-content">
+                    <h4 class="recent" id="发站网点"></h4>
+                    <p class="recent" id="托运日期"></p>
+                </div>
+            </li>
+            <li class="timeline-item">
+                <div class="timeline-item-color timeline-item-head"></div>
+                <div class="timeline-item-tail"></div>
+                <div class="timeline-item-content">
+                    <h4>物流途中</h4>
+                    <p id="配载日期"></p>
+                </div>
+            </li>
+            <li class="timeline-item" id="one">
+                <div class="timeline-item-color timeline-item-head"></div>
+                <div class="timeline-item-tail"></div>
+                <div class="timeline-item-content">
+                    <h4 id="提货网点"></h4>
+                    <p id="目的地"></p>
+                    <p id="到达"></p>
+                    <p>到站电话:<span id="到站电话"></span></p>
+                </div>
+            </li>
+            <li class="timeline-item" id="two">
+                <div class="timeline-item-color timeline-item-head"></div>
+                <div class="timeline-item-tail"></div>
+                <div class="timeline-item-content">
+                    <h4>提货日期</h4>
+                    <p id="结算日期"></p>
+                    <h6>提货人</h6>
+                    <p id="提货人"></p>
+                </div>
+            </li>
+            <li class="timeline-item" id="three">
+                <div class="timeline-item-color timeline-item-head"></div>
+                <div class="timeline-item-tail"></div>
+                <div class="timeline-item-content">
+                    <h4>付款日期</h4>
+                    <p id="付款日期"></p>
+                </div>
+            </li>
+            <li class="timeline-item" id="four">
+                <div class="timeline-item-color timeline-item-head"></div>
+                <div class="timeline-item-tail hide"></div>
+                <div class="timeline-item-content">
+                    <h4>汇款日期</h4>
+                    <p id="汇款日期"></p>
+                    <h6>收款人</h6>
+                    <p id="收款人"></p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+@section script
+{
+    <script>
+        /*搜索条获得焦点，隐藏其他*/
+        $("#search").focusin(function () {
+            $("#loadmore,#error,#YdView").hide();
+        });
+        $("#searchbtn").click(function () {
+            //获取单号
+            var dh = $("#search").val();
+            //检查运单号码长度
+            if (dh.length != 7) {
+                alert("运单号码应为7位，请检查后再试");
+                $("#search").focus();
+                return;
+            }
+            //显示查询状态条
+            $("#loadmore").show();
+            //查询运单数据
+            $.getJSON("/Client/Yd/SearchYd", { id: dh }, function (json) {
+                //数据结果
+                if (parseInt(json.state)) {
+                    //查到数据
+                    $.each(json, function (name, value) {
+                        $("#" + name).text(value);
+                    });
+                    var elems = $("#托运日期,#配载日期,#结算日期,#付款日期,#汇款日期");
+                    $.each(elems, function (i) {
+                        var dt;
+                        if ($(this).text() === "") {
+                            dt = new Date().toLocaleDateString()
+                            switch ($(this).attr("id")) {
+                                //处理结算日期
+                                case "结算日期":
+                                    $("#two,#three,#four").hide();
+                                    $("#one .timeline-item-tail").addClass("hide");
+                                    break;
+                                //处理付款日期
+                                case "付款日期":
+                                    $("#three,#four").hide();
+                                    $("#two .timeline-item-tail").addClass("hide");
+                                    break;
+                                //处理汇款日期
+                                case "汇款日期":
+                                    $("#four").hide();
+                                    $("#three .timeline-item-tail").addClass("hide");
+                                    break;
+                                default:
+                                    //$(this).text(dt);
+                            }
+                        } else {
+                            dt = new Date(Date.parse($(this).text())).toLocaleDateString();
+                        }
+                        $(this).text(dt);
+                    });
+                    $("#YdView").show();
+                } else {
+                    //未查到
+                    $("#error span").text(json.msg);     //显示错误信息
+                    $("#error").show();
+                }
+                //没有数据
+                $("#loadmore").hide();
+            });
+        });
+    </script>
+}

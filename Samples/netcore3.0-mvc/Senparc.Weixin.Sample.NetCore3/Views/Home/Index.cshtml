@@ -1,0 +1,95 @@
+﻿@model Senparc.Weixin.Sample.NetCore3.Models.VD.Home_IndexVD
+@{
+    ViewData["Title"] = "首页";
+    Layout = "~/Views/Shared/_LayoutSbAdmin2.cshtml";
+}
+@functions {
+
+    public static string YesOrNo(bool obj)
+    {
+        return obj ? "Y-brightgreen" : "N-lightgrey";
+    }
+}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">目前 Senparc.Weixin SDK 已支持微信 7.x API 中几乎所有接口以及小程序</h1>
+        <small>
+            当前站点运行 <a href="https://github.com/JeffreySu/WeiXinMPSDK/tree/master/Samples/netcore3-mvc/" target="_blank">Sample</a>
+            版本：v@(TempData["SampleVersion"]) (@TempData["BuildTime"])
+        </small>
+    </div>
+    @{
+        var row = 0;
+    }
+    @foreach (var item in Model.AssemblyModelCollection)
+    {
+        var groupInfo = item.Key;
+        var model = item.Value;
+        var i = 0;
+        <div class="card shadow mb-4 col">
+            <!-- Card Header - Accordion -->
+            <a href="#collapseCardExample-@row" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample-@row">
+                <h6 class="m-0 font-weight-bold text-primary">@groupInfo.Title</h6>
+                <small class="weixin-bottom-description">
+                    @Html.Raw(groupInfo.Description)
+                </small>
+            </a>
+            <div class="collapse show" id="collapseCardExample-@row">
+                <div class="card-body" id="nuget-versions-@i">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>功能模块</th>
+                                    <th>Nuget 包名称</th>
+                                    <th>Nuget 版本</th>
+                                    <th>当前站点运行版本</th>
+                                    <th>.NET 4.5</th>
+                                    <th>.NET Standard<br />2.0 / 2.1</th>
+                                    <th>.NET Core<br />2.x / 3.x</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var value in model)
+                                {
+                                    <tr>
+                                        <td>@(++i)</td>
+                                        <td>@Html.Raw(value.Title)</td>
+                                        <td>
+                                            <a class="sdk-version" href="https://www.nuget.org/packages/@(value.NugetName)" target="_blank">
+                                                @*@(value.AssemblyName)*@@(value.NugetName)
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a class="sdk-version" href="https://www.nuget.org/packages/@(value.NugetName)" target="_blank">
+                                                <img src="https://img.shields.io/nuget/v/@(value.NugetName).svg?style=flat" />
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @if (value.GitHubUrl != null)
+                                            {
+                                                <a class="sdk-version" href="@value.GitHubUrl" target="_blank">v@(value.Version)</a>
+                                            }
+                                            else
+                                            {
+                                                <text>v@(value.Version)</text>
+                                            }
+                                        </td>
+                                        <td><img title=".NET 4.5" alt=".NET 4.5" src="https://img.shields.io/badge/4.5-@(YesOrNo(value.SupportNet45)).svg" /></td>
+                                        <td><img title=".NET Standard 2.0 / 2.1" alt=".NET Standard 2.0 / 2.1" src="https://img.shields.io/badge/standard2.1-@(YesOrNo(value.SupportStandard21)).svg" /></td>
+                                        <td><img title=".NET Core 2.x / 3.x" alt=".NET Core 2.x / 3.x" src="https://img.shields.io/badge/core3.1-@(YesOrNo(value.SupportNetCore31)).svg" /></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        row++;
+    }
+</div>
+<!-- /.container-fluid -->
