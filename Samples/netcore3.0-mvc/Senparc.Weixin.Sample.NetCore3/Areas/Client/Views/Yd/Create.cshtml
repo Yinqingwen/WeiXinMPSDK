@@ -26,7 +26,7 @@
                 <label class="weui-label">货物名称</label>
             </div>
             <div class="weui-cell__bd">
-                <input class="weui-input" placeholder="货物名称" type="text" id="varo" name="varo">
+                <input class="weui-input" placeholder="货物名称" type="text" id="varo" name="varo" readonly value="">
             </div>
         </div>
         <div class="weui-cell">
@@ -47,6 +47,14 @@
             </div>
             <div class="weui-cell__bd">
                 <input class="weui-input" value="" placeholder="500.00" type="number" id="ds" name="ds">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label">保价金额</label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" value="" placeholder="5000.00" type="number" id="baojia" name="baojia">
             </div>
         </div>
         <div class="weui-cell">
@@ -73,9 +81,17 @@
                 <input class="weui-input" value="" placeholder="发货人电话，最好是手机" type="tel" id="sendtel" name="sendtel">
             </div>
         </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label">付款方式</label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" value="" type="text" id="style" name="style">
+            </div>
+        </div>
     </div>
     <div class="weui-btn-area">
-        <a class="weui-btn weui-btn_primary" href="javascript:" id="btn" style="width:100%;">发货</a>
+        <a class="weui-btn weui-btn_primary" href="javascript:" id="btn" style="width:100%; display:none;" >发货</a>
     </div>
 </form>
 
@@ -85,6 +101,14 @@
     <script type="text/javascript" src="~/lib/jquery.form/jquery.form.js"></script>
     <script type="text/javascript" src="~/js/Validate.js"></script>
     <script type="text/javascript">
+        $("#varo").select({
+            title: "货物名称",
+            items: ["服装", "鞋", "布", "配件", "用品", "轮胎", "其他"]
+        });
+        $("#style").select({
+            title: "付款方式",
+            items: ["提付", "现付"]
+        });
         //数值器增减函数
         var MAX = 99, MIN = 1;
         $('.weui-count__decrease').click(function (e) {
@@ -99,8 +123,10 @@
             if (number > MAX) number = MAX;
             $input.val(number)
         })
+        
         //住界面
         $(function () {
+            
             //为空校验设置
             var requireArr = [
                 {
