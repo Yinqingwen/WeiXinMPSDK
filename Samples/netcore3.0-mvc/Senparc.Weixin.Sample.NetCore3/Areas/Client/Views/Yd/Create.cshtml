@@ -91,7 +91,7 @@
         </div>
     </div>
     <div class="weui-btn-area">
-        <a class="weui-btn weui-btn_primary" href="javascript:" id="btn" style="width:100%; display:none;" >发货</a>
+        <a class="weui-btn weui-btn_primary" href="javascript:" id="btn" style="width:100%;" >发货</a>
     </div>
 </form>
 
@@ -152,21 +152,25 @@
                 {
                     id: "sendtel",
                     errmsg: "发货人电话不能为空！！！"
+                },
+                {
+                    id: "style",
+                    errmsg: "付款方式不能为空！！！"
                 }
             ];
             //字段长度校验
             var lengthArr = [
                 {
                     id: "recer",
-                    errmsg: "不能超过5个汉字"
+                    errmsg: "收货人姓名不能超过5个汉字"
                 },
                 {
                     id: "city",
-                    errmsg: "不能超过5个汉字"
+                    errmsg: "城市不能超过5个汉字"
                 },
                 {
                     id: "sender",
-                    errmsg: "不能超过5个汉字"
+                    errmsg: "发货人姓名不能超过5个汉字"
                 }
             ];
             //收货电话信息查询
@@ -185,15 +189,27 @@
             $(document).on("click", "#btn", function () {
                 //校验为空部分
                 $.each(requireArr, function (i, obj) {
-                    Validate.require("#" + obj.id, obj.errmsg);
+                    if (!Validate.require("#" + obj.id)) {
+                        $.toptip(obj.errmsg);
+                        $("#" + obj.id).focus();
+                        return false;
+                    }
                 });
+
                 //校验长度
                 $.each(lengthArr, function (i, obj) {
-                    Validate.len("#" + obj.id, 5, obj.errmsg);
+                    if (!Validate.len("#" + obj.id, 5)) {
+                        $.toptip(obj.errmsg);
+                        $("#" + obj.id).focus();
+                        return false;
+                    }
                 });
                 //校验电话格式
-                Validate.phone("#rectel", "收货人电话号码格式错误！！！");
-                Validate.phone("#sendtel", "发货人电话号码格式错误！！！");
+                if (!Validate.phone("#rectel", "收货人电话号码格式错误！！！")) {
+                    return false;
+                } else if (!Validate.phone("#sendtel", "发货人电话号码格式错误！！！")) {
+                    return false;
+                }
 
                 //提交数据
                 $.showLoading();                    //显示加载图标
@@ -220,7 +236,7 @@
                         }
                     },
                 });
-                return false; 
+                return false;
             })
 
             //解决表单控件不能回弹 只有微信ios有这个问题

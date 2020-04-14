@@ -67,21 +67,26 @@ namespace Senparc.Weixin.Sample.NetCore3.Controllers.Client
             string result = string.Empty;
             string param = string.Empty;
 
-            param = String.Format("RecTel={0}&Recer={1}&Varo={2}&Num={3}&Ds={4}&City={5}&Sender={6}&SendTel={7}", collection["rectel"],
-                                                                                                                        collection["recer"],
-                                                                                                                        collection["varo"],
-                                                                                                                        collection["num"],
-                                                                                                                        collection["ds"],
-                                                                                                                        collection["city"],
-                                                                                                                        collection["sender"],
-                                                                                                                        collection["sendtel"]);
+            //Webservice提供的提交字符串
+            //Company=string&RecTel=string&Recer=string&Varo=string&Num=string&Ds=string&City=string&Sender=string&SendTel=string&Baojia=string&Style=string
+            param = String.Format("Company={0}&RecTel={1}&Recer={2}&Varo={3}&Num={4}&Ds={5}&City={6}&Sender={7}&SendTel={8}&Baojia={9}&Style={10}", 
+                                   "胜京物流",
+                                   collection["rectel"],
+                                   collection["recer"],
+                                   collection["varo"],
+                                   collection["num"],
+                                   collection["ds"],
+                                   collection["city"],
+                                   collection["sender"],
+                                   collection["sendtel"],
+                                   collection["baojia"],
+                                   collection["style"]);
             result = WebServiceCall.CallPostMethod(param, method);
 
             FydInfo fydInfo = new FydInfo();
             fydInfo = fydInfo.GetFydInfo(result);
             
             return Json(fydInfo, new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() });
-            //return View("CreateMsg",fydInfo);
         }
     }
 }
