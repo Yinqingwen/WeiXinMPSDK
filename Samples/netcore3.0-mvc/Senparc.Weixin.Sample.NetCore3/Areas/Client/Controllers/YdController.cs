@@ -15,6 +15,12 @@ using YDService;
 using System.Text;
 using System.Xml;
 using Senparc.Weixin.Sample.NetCore3.Areas.Client.Help;
+using Microsoft.AspNetCore.Http.Extensions;
+using Senparc.Weixin.MP.AdvancedAPIs;
+using Senparc.CO2NET.Extensions;
+using Senparc.Weixin.MP;
+using Senparc.Weixin.MP.AdvancedAPIs.OAuth;
+using Senparc.Weixin.Exceptions;
 
 namespace Senparc.Weixin.Sample.NetCore3.Controllers.Client
 {
@@ -50,10 +56,68 @@ namespace Senparc.Weixin.Sample.NetCore3.Controllers.Client
             return Json(phoneInfo, new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() });
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult Create()
         {
             return View();
+        }
+
+        public IActionResult Test()
+        {
+            string returnUrl = "test";//Url.Action(); //Url.Action(); //Request.GetDisplayUrl();
+            string state = "Yinqingwen19690219";
+            string Oauthurl = OAuthApi.GetAuthorizeUrl(AppId,
+                                                       Url.Action("UserInfoCallBack", "yd", new { @returnUrl = returnUrl.UrlEncode() }, protocol: Request.Scheme),
+                                                       state,
+                                                       OAuthScope.snsapi_userinfo);
+            return Redirect(Oauthurl);
+        }
+
+        public IActionResult UserInfoCallBack(string code, string state, string returnUrl)
+        {
+            if (string.IsNullOrEmpty(code))
+            {
+                return Content("您拒绝了授权！");
+            }
+
+            if (state != "Yinqingwen19690219")
+            {
+                //这里的state其实是会暴露给客户端的，验证能力很弱，这里只是演示一下，
+                //建议用完之后就清空，将其一次性使用
+                //实际上可以存任何想传递的数据，比如用户ID，并且需要结合例如下面的Session["OAuthAccessToken"]进行验证
+                return Content("验证失败！请从正规途径进入！");
+            }
+
+            OAuthAccessTokenResult result = null;
+
+            //通过，用code换取access_token
+            try
+            {
+                result = OAuthApi.GetAccessToken(AppId, AppSecret, code);
+            }
+            catch (Exception ex)
+            {
+                return Content(ex.Message);
+            }
+            if (result.errcode != ReturnCode.请求成功)
+            {
+                return Content("错误：" + result.errmsg);
+            }
+
+            //因为第一步选择的是OAuthScope.snsapi_userinfo，这里可以进一步获取用户详细信息
+            try
+            {
+                OAuthUserInfo userInfo = OAuthApi.GetUserInfo(result.access_token, result.openid);
+                return View(returnUrl.HtmlDecode(), userInfo);
+            }
+            catch (ErrorJsonResultException ex)
+            {
+                return Content(ex.Message);
+            }
         }
 
         [HttpPost]
@@ -69,7 +133,7 @@ namespace Senparc.Weixin.Sample.NetCore3.Controllers.Client
 
             //Webservice提供的提交字符串
             //Company=string&RecTel=string&Recer=string&Varo=string&Num=string&Ds=string&City=string&Sender=string&SendTel=string&Baojia=string&Style=string
-            param = String.Format("Company={0}&RecTel={1}&Recer={2}&Varo={3}&Num={4}&Ds={5}&City={6}&Sender={7}&SendTel={8}&Baojia={9}&Style={10}", 
+            param = String.Format("Company={0}&RecTel={1}&Recer={2}&Varo={3}&Num={4}&Ds={5}&City={6}&Sender={7}&SendTel={8}&Baojia={9}&Style={10}",
                                    "胜京物流",
                                    collection["rectel"],
                                    collection["recer"],
@@ -85,7 +149,7 @@ namespace Senparc.Weixin.Sample.NetCore3.Controllers.Client
 
             FydInfo fydInfo = new FydInfo();
             fydInfo = fydInfo.GetFydInfo(result);
-            
+
             return Json(fydInfo, new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() });
         }
     }

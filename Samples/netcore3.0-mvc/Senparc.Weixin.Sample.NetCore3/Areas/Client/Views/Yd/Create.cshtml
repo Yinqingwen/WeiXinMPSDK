@@ -2,98 +2,99 @@
     ViewData["Title"] = "发货";
     Layout = "~/Views/Shared/_LayoutWeuiPlus.cshtml";
 }
-<form id="Yd-form" method="post" asp-area="Client" asp-controller="Yd" asp-action="Create">
-    <div class="weui-cells__title">发货运单</div>
-    <div class="weui-cells weui-cells_form">
-        <div class="weui-cell">
-            <div class="weui-cell__hd">
-                <label class="weui-label">收货人电话</label>
+    <form id="Yd-form" method="post" asp-area="Client" asp-controller="Yd" asp-action="Create">
+        @*
+        <div class="weui-cells__title">发货运单</div>*@
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">收货人电话</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input req" pattern="[0-9]*" placeholder="收货人电话，最好是手机" type="tel" id="rectel" name="rectel">
+                </div>
             </div>
-            <div class="weui-cell__bd">
-                <input class="weui-input req" pattern="[0-9]*" placeholder="收货人电话，最好是手机" type="tel" id="rectel" name="rectel">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">收货人</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" placeholder="收货人姓名" type="text" id="recer" name="recer">
+                </div>
             </div>
-        </div>
-        <div class="weui-cell">
-            <div class="weui-cell__hd">
-                <label class="weui-label">收货人</label>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">货物名称</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" placeholder="货物名称" type="text" id="varo" name="varo" readonly value="">
+                </div>
             </div>
-            <div class="weui-cell__bd">
-                <input class="weui-input" placeholder="收货人姓名" type="text" id="recer" name="recer">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">件数</label>
+                </div>
+                <div class="weui-cell__ft">
+                    <div class="weui-count">
+                        <a class="weui-count__btn weui-count__decrease"></a>
+                        <input class="weui-count__number" type="number" value="1" id="num" name="num">
+                        <a class="weui-count__btn weui-count__increase"></a>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="weui-cell">
-            <div class="weui-cell__hd">
-                <label class="weui-label">货物名称</label>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">代收金额</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" value="" placeholder="500.00" type="number" id="ds" name="ds">
+                </div>
             </div>
-            <div class="weui-cell__bd">
-                <input class="weui-input" placeholder="货物名称" type="text" id="varo" name="varo" readonly value="">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">保价金额</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" value="" placeholder="5000.00" type="number" id="baojia" name="baojia">
+                </div>
             </div>
-        </div>
-        <div class="weui-cell">
-            <div class="weui-cell__hd">
-                <label class="weui-label">件数</label>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">目的地</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" value="" placeholder="本物流直达城市名称" type="text" id="city" name="city">
+                </div>
             </div>
-            <div class="weui-cell__ft">
-                <div class="weui-count">
-                    <a class="weui-count__btn weui-count__decrease"></a>
-                    <input class="weui-count__number" type="number" value="1" id="num" name="num">
-                    <a class="weui-count__btn weui-count__increase"></a>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">发货人</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" value="" placeholder="发货人姓名" type="text" id="sender" name="sender">
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">发货人电话</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" value="" placeholder="发货人电话，最好是手机" type="tel" id="sendtel" name="sendtel">
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">付款方式</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" value="" type="text" id="style" name="style">
                 </div>
             </div>
         </div>
-        <div class="weui-cell">
-            <div class="weui-cell__hd">
-                <label class="weui-label">代收金额</label>
-            </div>
-            <div class="weui-cell__bd">
-                <input class="weui-input" value="" placeholder="500.00" type="number" id="ds" name="ds">
-            </div>
+        <div class="weui-btn-area" style="margin-top:8px; ">
+            <a class="weui-btn weui-btn_block weui-btn_primary" href="javascript:" id="btn">发货</a>
         </div>
-        <div class="weui-cell">
-            <div class="weui-cell__hd">
-                <label class="weui-label">保价金额</label>
-            </div>
-            <div class="weui-cell__bd">
-                <input class="weui-input" value="" placeholder="5000.00" type="number" id="baojia" name="baojia">
-            </div>
-        </div>
-        <div class="weui-cell">
-            <div class="weui-cell__hd">
-                <label class="weui-label">目的地</label>
-            </div>
-            <div class="weui-cell__bd">
-                <input class="weui-input" value="" placeholder="本物流直达城市名称" type="text" id="city" name="city">
-            </div>
-        </div>
-        <div class="weui-cell">
-            <div class="weui-cell__hd">
-                <label class="weui-label">发货人</label>
-            </div>
-            <div class="weui-cell__bd">
-                <input class="weui-input" value="" placeholder="发货人姓名" type="text" id="sender" name="sender">
-            </div>
-        </div>
-        <div class="weui-cell">
-            <div class="weui-cell__hd">
-                <label class="weui-label">发货人电话</label>
-            </div>
-            <div class="weui-cell__bd">
-                <input class="weui-input" value="" placeholder="发货人电话，最好是手机" type="tel" id="sendtel" name="sendtel">
-            </div>
-        </div>
-        <div class="weui-cell">
-            <div class="weui-cell__hd">
-                <label class="weui-label">付款方式</label>
-            </div>
-            <div class="weui-cell__bd">
-                <input class="weui-input" value="" type="text" id="style" name="style">
-            </div>
-        </div>
-    </div>
-    <div class="weui-btn-area">
-        <a class="weui-btn weui-btn_primary" href="javascript:" id="btn" style="width:100%;" >发货</a>
-    </div>
-</form>
+    </form>
 
 @section script
 {
