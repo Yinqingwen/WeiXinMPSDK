@@ -10,13 +10,11 @@ namespace Senparc.Weixin.Sample.NetCore3.Areas.Client.Help
     {
         public static string Url = "http://123.56.190.161:40/service.asmx";
 
-
         /// <summary>
         /// 通过httpclient方式调用WebService
         /// </summary>
         /// <param name="param">调用参数字符串，格式请参见asmx页面函数的格式介绍</param>
         /// <param name="callmethod">要调用的远程函数</param>
-        /// <param name="method">调用的方法，如Post，Get</param>
         /// <param name="Url">WebService的URL地址</param>
         /// <returns>字符串类型的返回值，自行解析</returns>
         public static string CallPostMethod(string param,string callmethod, string url = "http://123.56.190.161:40/service.asmx")
@@ -71,9 +69,6 @@ namespace Senparc.Weixin.Sample.NetCore3.Areas.Client.Help
 
             response.Dispose();
             response.Close();
-
-            //reader.Close();
-            //reader.Dispose();
 
             Reader.Dispose();
             Reader.Close();

@@ -68,7 +68,7 @@ namespace Senparc.Weixin.Sample.NetCore3.Controllers.Client
 
         public IActionResult Test()
         {
-            string returnUrl = "test";//Url.Action(); //Url.Action(); //Request.GetDisplayUrl();
+            string returnUrl = "~" + Url.Action().ToString(); //Url.Action(); //Request.GetDisplayUrl();
             string state = "Yinqingwen19690219";
             string Oauthurl = OAuthApi.GetAuthorizeUrl(AppId,
                                                        Url.Action("UserInfoCallBack", "yd", new { @returnUrl = returnUrl.UrlEncode() }, protocol: Request.Scheme),
@@ -112,7 +112,7 @@ namespace Senparc.Weixin.Sample.NetCore3.Controllers.Client
             try
             {
                 OAuthUserInfo userInfo = OAuthApi.GetUserInfo(result.access_token, result.openid);
-                return View(returnUrl.HtmlDecode(), userInfo);
+                return View(returnUrl.UrlDecode(), userInfo);
             }
             catch (ErrorJsonResultException ex)
             {

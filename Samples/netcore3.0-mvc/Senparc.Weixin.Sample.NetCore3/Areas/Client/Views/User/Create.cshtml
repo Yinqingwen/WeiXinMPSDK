@@ -1,0 +1,55 @@
+﻿@model Senparc.Weixin.MP.AdvancedAPIs.OAuth.OAuthUserInfo
+@{
+    ViewData["Title"] = "用户注册或修改";
+    Layout = "~/Views/Shared/_LayoutWeuiPlus.cshtml";
+}
+@{
+    var openid = "";
+    if (Model != null) {
+        openid = Model.openid;
+    }
+}
+@section css{
+    <style type="text/css">
+        form{
+            margin:.5em;
+        }
+        .weui-cells__title {
+            background-color: Highlight;
+            color: white;
+            padding: 1em;
+            margin: 0;
+        }
+        .weui-cell{
+            margin:1em;
+        }
+    </style>
+}
+<form class="border" asp-area="client" asp-controller="User" asp-action="Create" method="post">
+    <div class="weui-cells__title f16">
+        用户注册<br />
+        <small class="f11">请输入您正确的联系手机及收派件地址，我们将根据您的联系方式即时推送消息给您</small>
+    </div>
+    <div class="weui-cells weui-cells_form">
+        <input type="hidden" value="@openid" id="openid" name="openid">
+        <div class="weui-cell border-radius">
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="姓名或单位名称" id="name" name="name">
+            </div>
+        </div>
+        <div class="weui-cell border-radius">
+            <div class="weui-cell__bd">
+                <input class="weui-input" pattern="[0-9]*" placeholder="您的手机号" type="number" id="phone" name="phone">
+            </div>
+        </div>
+        <div class="weui-cell border-radius">
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="公司名称或单位地址" id="address" name="address">
+            </div>
+        </div>
+    </div>
+    <div class="weui-btn-area">
+        <a class="weui-btn weui-btn_primary" href="javascript:" id="btn" style="width:100%;">保存</a>
+    </div>
+</form>
+

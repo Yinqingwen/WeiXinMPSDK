@@ -30,7 +30,7 @@ namespace YDService
         
         [System.ServiceModel.OperationContractAttribute(Action="http://sckp.com/Add_Info", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<string> Add_InfoAsync(string RecTel, string Recer, string Varo, string Num, string Ds, string City, string Sender, string SendTel);
+        System.Threading.Tasks.Task<string> Add_InfoAsync(string Company, string RecTel, string Recer, string Varo, string Num, string Ds, string City, string Sender, string SendTel, string Baojia, string Style);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://sckp.com/To_Info", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -115,9 +115,9 @@ namespace YDService
             return base.Channel.WX_EditCustAsync(Company, Wxid, Name, CellPhone);
         }
         
-        public System.Threading.Tasks.Task<string> Add_InfoAsync(string RecTel, string Recer, string Varo, string Num, string Ds, string City, string Sender, string SendTel)
+        public System.Threading.Tasks.Task<string> Add_InfoAsync(string Company, string RecTel, string Recer, string Varo, string Num, string Ds, string City, string Sender, string SendTel, string Baojia, string Style)
         {
-            return base.Channel.Add_InfoAsync(RecTel, Recer, Varo, Num, Ds, City, Sender, SendTel);
+            return base.Channel.Add_InfoAsync(Company, RecTel, Recer, Varo, Num, Ds, City, Sender, SendTel, Baojia, Style);
         }
         
         public System.Threading.Tasks.Task<string> To_InfoAsync(string comp, string Danhao)
