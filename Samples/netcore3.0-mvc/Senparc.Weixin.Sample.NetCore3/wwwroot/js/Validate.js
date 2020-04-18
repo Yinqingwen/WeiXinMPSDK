@@ -25,7 +25,7 @@ var Validate = {
         }
     },
     //电话号码校验
-    phone: function (elem, errmsg) {
+    phone: function (elem) {
         var value = $.trim($(elem).val());
         if (!/^((0\d{2,3}-\d{7,8})|(\d{7,8})|(1[3456789]\d{9}))$/.test(value)) { // /^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57]|17[0-9])[0-9]{8}$/
             return false;

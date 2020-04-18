@@ -1,4 +1,10 @@
-﻿@model Senparc.Weixin.MP.AdvancedAPIs.OAuth.OAuthUserInfo
+﻿@functions{
+    public string GetMPname()
+    {
+        return string.IsNullOrWhiteSpace(Configuration.GetSection("SystemSetting")["MPName"]) ? "Manager" : Configuration.GetSection("SystemSetting")["MPName"];
+    }
+}
+@model Senparc.Weixin.MP.AdvancedAPIs.OAuth.OAuthUserInfo
 @{
     ViewData["Title"] = "用户注册或修改";
     Layout = "~/Views/Shared/_LayoutWeuiPlus.cshtml";
@@ -11,26 +17,29 @@
 }
 @section css{
     <style type="text/css">
-        form{
-            margin:.5em;
+        form {
+            margin: .5em;
         }
+
         .weui-cells__title {
             background-color: Highlight;
             color: white;
             padding: 1em;
             margin: 0;
         }
-        .weui-cell{
-            margin:1em;
+
+        .weui-cell {
+            margin: 1em;
         }
     </style>
 }
-<form class="border" asp-area="client" asp-controller="User" asp-action="Create" method="post">
+<form class="border" id="userform" asp-area="client" asp-controller="User" asp-action="Create" method="post">
     <div class="weui-cells__title f16">
         用户注册<br />
         <small class="f11">请输入您正确的联系手机及收派件地址，我们将根据您的联系方式即时推送消息给您</small>
     </div>
     <div class="weui-cells weui-cells_form">
+        <input type="hidden" value="@GetMPname()" id="company" name="company">
         <input type="hidden" value="@openid" id="openid" name="openid">
         <div class="weui-cell border-radius">
             <div class="weui-cell__bd">
@@ -52,4 +61,58 @@
         <a class="weui-btn weui-btn_primary" href="javascript:" id="btn" style="width:100%;">保存</a>
     </div>
 </form>
+@section script{
+    <script type="text/javascript" src="~/lib/jquery.form/jquery.form.js"></script>
+    <script type="text/javascript" src="~/js/Validate.js"></script>
+    <script type="text/javascript">
+        //为空校验设置
+        var requireArr = [
+            {
+                id: "name",
+                errmsg: "姓名或单位名称不能为空！！！"
+            },
+            {
+                id: "phone",
+                errmsg: "请输入您的手机号码，不能为空！！！"
+            }
+        ];
 
+        $().ready(function () {
+
+
+        });
+
+        /*保存按钮处理*/
+        $("#btn").click(function () {
+            //校验为空部分
+            $.each(requireArr, function (i, obj) {
+                if (!Validate.require("#" + obj.id)) {
+                    $.toptip(obj.errmsg);
+                    $("#" + obj.id).focus();
+                    return false;
+                }
+            });
+            if (!Validate.phone("#phone")) {
+                $.toptip("您的电话号码格式错误！！！");
+                $("#phone").focus();
+                return false;
+            } else {
+                $.showLoading();
+                jQuery("#userform").ajaxSubmit({
+                    dataType: "json",
+                    success: function (json) {
+                        //关闭加载图标
+                        $.hideLoading();
+                        if (json.state === "1") {
+                            //提交成功，显示提示
+                            $.toptip(json.message, 'success');
+                        } else {
+                            //显示错误信息
+                            $.toptip(json.message, 'error')
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+}

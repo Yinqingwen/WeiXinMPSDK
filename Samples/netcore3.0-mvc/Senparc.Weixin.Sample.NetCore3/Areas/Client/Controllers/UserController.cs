@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Senparc.CO2NET.Extensions;
 using Senparc.Weixin.Exceptions;
 using Senparc.Weixin.MP;
 using Senparc.Weixin.MP.AdvancedAPIs;
 using Senparc.Weixin.MP.AdvancedAPIs.OAuth;
+using Senparc.Weixin.Sample.NetCore3.Areas.Client.Help;
 using Senparc.Weixin.Sample.NetCore3.Controllers;
+using System;
 
 namespace Senparc.Weixin.Sample.NetCore3.Areas.Client.Controllers
 {
@@ -17,18 +17,6 @@ namespace Senparc.Weixin.Sample.NetCore3.Areas.Client.Controllers
     [Route("Client/[controller]/[action]")]
     public class UserController : BaseController
     {
-        // GET: User
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        // GET: User/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
         /// <summary>
         ///  根据用户微信OpenID注册
         /// </summary>
@@ -36,7 +24,7 @@ namespace Senparc.Weixin.Sample.NetCore3.Areas.Client.Controllers
         // GET: User/Create
         public ActionResult Create()
         {
-#if RELEASE
+            /*
             string returnUrl = "Create";
             string state = "Yinqingwen19690219";
 
@@ -45,10 +33,8 @@ namespace Senparc.Weixin.Sample.NetCore3.Areas.Client.Controllers
                                                        state,
                                                        OAuthScope.snsapi_userinfo);
             return Redirect(Oauthurl);
-#endif
-#if DEBUG
+            */
             return View();
-#endif
         }
 
         public IActionResult UserInfoCallBack(string code, string state, string returnUrl)
@@ -99,16 +85,49 @@ namespace Senparc.Weixin.Sample.NetCore3.Areas.Client.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
         {
-            try
-            {
-                // TODO: Add insert logic here
+            //链接远程Webservice
+            //string url = "http://123.56.190.161:40/service.asmx";
+            string method = "WX_EditCust";
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
+            string result = string.Empty;
+            string param = string.Empty;
+
+            string openid = (collection["openid"].ToString().IsNullOrWhiteSpace()) ? "om1eLs8Xfp3ELJIwsFYb6NRNF9U8" : collection["openid"].ToString(); //om1eLs8Xfp3ELJIwsFYb6NRNF9U8
+            //Webservice提供的提交字符串
+            //Company=string&Wxid=string&Name=string&CellPhone=string&Address=string
+            param = String.Format("Company={0}&Wxid={1}&Name={2}&CellPhone={3}&Address={4}",
+                                   collection["company"],
+                                   openid,
+                                   collection["name"],
+                                   collection["phone"],
+                                   collection["address"]);
+            result = WebServiceCall.CallPostMethod(param, method);
+
+            ResultMessage resultMessage = new ResultMessage();
+
+            if (!result.IsNullOrWhiteSpace())
             {
-                return View();
+                string[] sArray = result.Split('#');
+                sArray[1] = "message=" + sArray[1];
+
+                foreach (string substr in sArray)
+                {
+                    if (!string.IsNullOrWhiteSpace(substr))
+                    {
+                        string[] ssArry = substr.Split('=');
+                        resultMessage.GetType().GetProperty(ssArry[0]).SetValue(resultMessage, ssArry[1]);
+                    }
+                }
             }
+            else
+            {
+                resultMessage = new ResultMessage()
+                {
+                    state = "0",
+                    message = "服务器端发生故障！！！"
+                };
+            }
+            return Json(resultMessage, new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() });
         }
 
         // GET: User/Edit/5

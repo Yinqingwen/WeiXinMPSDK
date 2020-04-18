@@ -206,10 +206,12 @@
                     }
                 });
                 //校验电话格式
-                if (!Validate.phone("#rectel", "收货人电话号码格式错误！！！")) {
+                if (!Validate.phone("#rectel")) {
+                    $.toptip("收货人电话号码格式错误！！！");
                     $("#rectel").focus();
                     return false;
-                } else if (!Validate.phone("#sendtel", "发货人电话号码格式错误！！！")) {
+                } else if (!Validate.phone("#sendtel")) {
+                    $.toptip("发货人电话号码格式错误！！！");
                     $("#sendtel").focus();
                     return false;
                 }
