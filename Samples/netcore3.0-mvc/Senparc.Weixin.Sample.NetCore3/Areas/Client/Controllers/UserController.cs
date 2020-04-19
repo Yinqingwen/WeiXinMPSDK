@@ -98,15 +98,16 @@ namespace Senparc.Weixin.Sample.NetCore3.Areas.Client.Controllers
             string result = string.Empty;
             string param = string.Empty;
 
-            string openid = (collection["openid"].ToString().IsNullOrWhiteSpace()) ? "om1eLs8Xfp3ELJIwsFYb6NRNF9U8" : collection["openid"].ToString(); //om1eLs8Xfp3ELJIwsFYb6NRNF9U8
+            //string openid = (collection["openid"].ToString().IsNullOrWhiteSpace()) ? "om1eLs8Xfp3ELJIwsFYb6NRNF9U8" : collection["openid"].ToString(); //om1eLs8Xfp3ELJIwsFYb6NRNF9U8
             //Webservice提供的提交字符串
             //Company=string&Wxid=string&Name=string&CellPhone=string&Address=string
             param = String.Format("Company={0}&Wxid={1}&Name={2}&CellPhone={3}&Address={4}",
-                                   collection["company"],
-                                   openid,
-                                   collection["name"],
-                                   collection["phone"],
-                                   collection["address"]);
+                                   collection["company"].ToString().Trim(),
+                                   collection["openid"].ToString().Trim(),
+                                   collection["name"].ToString().Trim(),
+                                   collection["phone"].ToString().Trim(),
+                                   collection["address"].ToString().Trim());
+
             result = WebServiceCall.CallPostMethod(param, method);
 
             ResultMessage resultMessage = new ResultMessage();

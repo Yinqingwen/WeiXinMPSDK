@@ -63,7 +63,19 @@ namespace Senparc.Weixin.Sample.NetCore3.Controllers.Client
         [HttpGet]
         public ActionResult Create()
         {
+#if RELEASE
+            string returnUrl = "Create";
+            string state = "Yinqingwen19690219";
+
+            string Oauthurl = OAuthApi.GetAuthorizeUrl(AppId,
+                                                       Url.Action("UserInfoCallBack", "Yd", new { @returnUrl = returnUrl.UrlEncode() }, protocol: Request.Scheme),
+                                                       state,
+                                                       OAuthScope.snsapi_userinfo);
+            return Redirect(Oauthurl);
+#endif
+#if DEBUG
             return View();
+#endif
         }
 
         public IActionResult Test()
