@@ -8,15 +8,24 @@ using Senparc.Weixin.MP;
 using Senparc.Weixin.MP.AdvancedAPIs;
 using Senparc.Weixin.MP.AdvancedAPIs.OAuth;
 using Senparc.Weixin.Sample.NetCore3.Areas.Client.Help;
+using Senparc.Weixin.Sample.NetCore3.Areas.Client.Models;
 using Senparc.Weixin.Sample.NetCore3.Controllers;
 using System;
 
 namespace Senparc.Weixin.Sample.NetCore3.Areas.Client.Controllers
 {
     [Area("Client")]
-    [Route("Client/[controller]/[action]")]
+    [Route("Client/[controller]/[action]/{id?}")]
     public class UserController : BaseController
     {
+        public ActionResult GetUser(string id)
+        {
+            UserInfo result = new UserInfo();
+            result = result.GetUserInfo(id);
+
+            return Json(result, new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() });
+        }
+
         /// <summary>
         ///  根据用户微信OpenID注册
         /// </summary>
@@ -24,7 +33,6 @@ namespace Senparc.Weixin.Sample.NetCore3.Areas.Client.Controllers
         // GET: User/Create
         public ActionResult Create()
         {
-            /*
             string returnUrl = "Create";
             string state = "Yinqingwen19690219";
 
@@ -33,8 +41,6 @@ namespace Senparc.Weixin.Sample.NetCore3.Areas.Client.Controllers
                                                        state,
                                                        OAuthScope.snsapi_userinfo);
             return Redirect(Oauthurl);
-            */
-            return View();
         }
 
         public IActionResult UserInfoCallBack(string code, string state, string returnUrl)
@@ -131,7 +137,7 @@ namespace Senparc.Weixin.Sample.NetCore3.Areas.Client.Controllers
         }
 
         // GET: User/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit()
         {
             return View();
         }

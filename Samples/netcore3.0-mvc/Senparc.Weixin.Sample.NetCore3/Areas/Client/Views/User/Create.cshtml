@@ -78,9 +78,18 @@
         ];
 
         $().ready(function () {
-
-
-        });
+            if ($("#openid").val() != "") {
+                $.showLoading();
+                $.getJSON("/Client/User/GetUser/" + $("#openid").val(), function (json) {
+                    if (json.state === "1") {
+                        $("#name").val(json.name);
+                        $("#phone").val(json.phone);
+                        $("#address").val(json.Address);
+                        $.hideLoading();
+                    }
+                });
+            }
+        })
 
         /*保存按钮处理*/
         $("#btn").click(function () {

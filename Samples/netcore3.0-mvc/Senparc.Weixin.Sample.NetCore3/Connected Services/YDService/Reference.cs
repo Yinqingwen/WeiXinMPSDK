@@ -26,7 +26,7 @@ namespace YDService
         
         [System.ServiceModel.OperationContractAttribute(Action="http://sckp.com/WX_EditCust", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<string> WX_EditCustAsync(string Company, string Wxid, string Name, string CellPhone);
+        System.Threading.Tasks.Task<string> WX_EditCustAsync(string Company, string Wxid, string Name, string CellPhone, string Address);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://sckp.com/Add_Info", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -110,9 +110,9 @@ namespace YDService
             return base.Channel.WX_SearchCustAsync(Company, Wxid);
         }
         
-        public System.Threading.Tasks.Task<string> WX_EditCustAsync(string Company, string Wxid, string Name, string CellPhone)
+        public System.Threading.Tasks.Task<string> WX_EditCustAsync(string Company, string Wxid, string Name, string CellPhone, string Address)
         {
-            return base.Channel.WX_EditCustAsync(Company, Wxid, Name, CellPhone);
+            return base.Channel.WX_EditCustAsync(Company, Wxid, Name, CellPhone, Address);
         }
         
         public System.Threading.Tasks.Task<string> Add_InfoAsync(string Company, string RecTel, string Recer, string Varo, string Num, string Ds, string City, string Sender, string SendTel, string Baojia, string Style)
