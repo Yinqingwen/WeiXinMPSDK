@@ -1,8 +1,77 @@
-﻿
+﻿@functions{
+    public string GetMPname()
+    {
+        return string.IsNullOrWhiteSpace(Configuration.GetSection("SystemSetting")["MPName"]) ? "Manager" : Configuration.GetSection("SystemSetting")["MPName"];
+    }
+}
+@model Senparc.Weixin.MP.AdvancedAPIs.OAuth.OAuthUserInfo
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "放代注册";
     Layout = "~/Views/Shared/_LayoutWeuiPlus.cshtml";
 }
+@{
+    var openid = "";
+    if (Model != null)
+    {
+        openid = Model.openid;
+    }
+}
+@section css{
+    <style type="text/css">
+        form {
+            margin: .5em;
+        }
 
-<h2>Edit</h2>
+        .weui-cells__title {
+            background-color: antiquewhite;
+            color: burlywood;
+            padding: 1em;
+            margin: 0;
+        }
 
+        .weui-cell {
+            margin: 1em;
+        }
+    </style>
+}
+<form class="border" id="userform" asp-area="client" asp-controller="User" asp-action="Create" method="post">
+    <div class="weui-cells__title f16">
+        协议放代客户申请<br />
+        <small class="f11">请输入您正确的银行信息，这样可以让您在发运含有代收货款的运单的时候，我司可以将代收货款直接结算进入您的银行账户。当代收款项发放以后，我们将发送消息通知您的财物</small>
+    </div>
+    <div class="weui-cells weui-cells_form">
+        <input type="hidden" value="@GetMPname()" id="company" name="company">
+        <input type="hidden" value="@openid" id="openid" name="openid">
+        <div class="weui-cell border-radius">
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="持卡银行" id="bank" name="bank">
+            </div>
+        </div>
+        <div class="weui-cell border-radius">
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="持卡人姓名" id="name" name="name">
+            </div>
+        </div>
+        <div class="weui-cell border-radius">
+            <div class="weui-cell__bd">
+                <input class="weui-input" pattern="[0-9]*" placeholder="银行卡号" type="number" id="cardnumber" name="cardnumber">
+            </div>
+        </div>
+        <div class="weui-cell border-radius">
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="number" pattern="[0-9]*" placeholder="财物电话，最好为手机号码" id="phone" name="phone">
+            </div>
+        </div>
+    </div>
+    <div class="weui-btn-area">
+        <a class="weui-btn weui-btn_primary" href="javascript:" id="btn" style="width:100%;display:none;">保存</a>
+    </div>
+</form>
+@section script{ 
+    <script type="text/javascript">
+        $("#bank").select({
+            title: "货物名称",
+            items: ["富滇银行", "工商银行", "光大银行", "广发银行", "广州银行", "建设银行", "交通银行", "民生银行", "南京银行", "农业银行", "浦发银行", "秦农银行", "上海银行", "兴业银行", "邮政储蓄", "招商银行", "中国银行"]
+        });
+    </script>
+}
