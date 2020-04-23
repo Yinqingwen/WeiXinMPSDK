@@ -149,9 +149,9 @@
                     if (json.state === "1") {
                         $("#sender").val(json.name);
                         $("#sendtel").val(json.phone);
-                        $.hideLoading();
                     }
                 });
+                $.hideLoading();
             }
             //为空校验设置
             var requireArr = [
