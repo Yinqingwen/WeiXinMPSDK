@@ -45,12 +45,12 @@ namespace Senparc.Weixin.Sample.NetCore3.Models
         /// <summary>
         /// 付款方式
         /// </summary>
-        public string 付款方式 { get; set; }
+        /*public string 付款方式 { get; set; }*/
 
         /// <summary>
         /// 应收款
         /// </summary>
-        public string 应收款 { get; set; }
+        /*public string 应收款 { get; set; }*/
 
         /// <summary>
         /// 托运日期
@@ -58,44 +58,39 @@ namespace Senparc.Weixin.Sample.NetCore3.Models
         public string 托运日期 { get; set; }
 
         /// <summary>
-        /// 中转方式
+        /// 配载日期
         /// </summary>
-        public string 中转方式 { get; set; }
+        public string 配载日期 { get; set; }
 
         /// <summary>
-        /// 状态
+        /// 结算日期
         /// </summary>
-        public string 状态 { get; set; }
+        public string 结算日期 { get; set; }
 
         /// <summary>
-        /// 合同
+        /// 提货人
         /// </summary>
-        public string 合同 { get; set; }
+        public string 提货人 { get; set; }
 
         /// <summary>
-        /// 持卡人
+        /// 付款日期
         /// </summary>
-        public string 持卡人 { get; set; }
+        public string 付款日期 { get; set; }
 
         /// <summary>
-        /// 卡号
+        /// 汇款日期
         /// </summary>
-        public string 卡号 { get; set; }
+        public string 汇款日期 { get; set; }
 
         /// <summary>
-        /// 发站电话
+        /// 收款人
         /// </summary>
-        public string 发站电话 { get; set; }
+        public string 收款人 { get; set; }
 
         /// <summary>
         /// 到站电话
         /// </summary>
         public string 到站电话 { get; set; }
-
-        /// <summary>
-        /// 放代点
-        /// </summary>
-        public string 放代点 { get; set; }
 
         /// <summary>
         /// 默认构造函数
@@ -118,7 +113,7 @@ namespace Senparc.Weixin.Sample.NetCore3.Models
             //获取远程数据
             name = string.IsNullOrWhiteSpace(name) ? "胜京物流" : name;
             company = string.IsNullOrWhiteSpace(company) ? "胜京物流" : company;
-            string result = yDServiceClient.To_InfoAsync(name, company, ordernumber).Result.ToString();
+            string result = yDServiceClient.To_InfoAsync(company, ordernumber).Result.ToString();
 
             //调整返回字符串格式
             result = result.Replace('#', '&');
@@ -220,4 +215,66 @@ namespace Senparc.Weixin.Sample.NetCore3.Models
             return result;
         }
     }
+
+    /// <summary>
+    /// 根据电话号码查询收货人信息
+    /// </summary>
+    public class PhoneInfo 
+    { 
+        /// <summary>
+        /// 查询状态，1为正常，0为错误
+        /// </summary>
+        public string state { get; set; }
+
+        /// <summary>
+        /// 消息
+        /// </summary>
+        public string msg { get; set; }
+
+        /// <summary>
+        /// 收货人
+        /// </summary>
+        public string 收货人 { get; set; }
+
+        /// <summary>
+        /// 到站城市
+        /// </summary>
+        public string 到站城市 { get; set; }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        public PhoneInfo() 
+        { }
+
+        public PhoneInfo GetPhoneInfo(string state)
+        {
+            //链接远程Webservice
+            ServiceSoapClient.EndpointConfiguration endpoit = new YDService.ServiceSoapClient.EndpointConfiguration();
+            ServiceSoapClient yDServiceClient = new YDService.ServiceSoapClient(endpoit);
+
+            //获取远程数据
+            string result = yDServiceClient.WX_SY_RecerAsync("胜京物流", state).Result.ToString(); //.To_InfoAsync(company, ordernumber).Result.ToString();
+
+            PhoneInfo phoneInfo = new PhoneInfo();
+
+            result = result.Replace('#', '&');
+            result = result.Replace("err", "msg");
+            string[] sArray = result.Split('&');
+
+            //数据赋值
+            foreach (string substr in sArray)
+            {
+                if (!string.IsNullOrWhiteSpace(substr))
+                {
+                    string[] ssArry = substr.Split('=');
+
+                    phoneInfo.GetType().GetProperty(ssArry[0]).SetValue(phoneInfo, ssArry[1]);
+                }
+            }
+
+            return phoneInfo;
+        }
+    }
+
 }

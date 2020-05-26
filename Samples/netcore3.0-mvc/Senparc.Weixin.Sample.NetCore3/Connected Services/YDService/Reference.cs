@@ -16,13 +16,25 @@ namespace YDService
     public interface ServiceSoap
     {
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://sckp.com/WX_SY_Recer", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        System.Threading.Tasks.Task<string> WX_SY_RecerAsync(string comp, string CellPhone);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://sckp.com/WX_SearchCust", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        System.Threading.Tasks.Task<string> WX_SearchCustAsync(string Company, string Wxid);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://sckp.com/WX_EditCust", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        System.Threading.Tasks.Task<string> WX_EditCustAsync(string Company, string Wxid, string Name, string CellPhone);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://sckp.com/Add_Info", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<string> Add_InfoAsync(string RecTel, string Recer, string Varo, string Num, string Ds, string City, string Sender, string SendTel);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://sckp.com/To_Info", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<string> To_InfoAsync(string name, string comp, string Danhao);
+        System.Threading.Tasks.Task<string> To_InfoAsync(string comp, string Danhao);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://sckp.com/SYS_CHECKIN", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -88,14 +100,29 @@ namespace YDService
         {
         }
         
+        public System.Threading.Tasks.Task<string> WX_SY_RecerAsync(string comp, string CellPhone)
+        {
+            return base.Channel.WX_SY_RecerAsync(comp, CellPhone);
+        }
+        
+        public System.Threading.Tasks.Task<string> WX_SearchCustAsync(string Company, string Wxid)
+        {
+            return base.Channel.WX_SearchCustAsync(Company, Wxid);
+        }
+        
+        public System.Threading.Tasks.Task<string> WX_EditCustAsync(string Company, string Wxid, string Name, string CellPhone)
+        {
+            return base.Channel.WX_EditCustAsync(Company, Wxid, Name, CellPhone);
+        }
+        
         public System.Threading.Tasks.Task<string> Add_InfoAsync(string RecTel, string Recer, string Varo, string Num, string Ds, string City, string Sender, string SendTel)
         {
             return base.Channel.Add_InfoAsync(RecTel, Recer, Varo, Num, Ds, City, Sender, SendTel);
         }
         
-        public System.Threading.Tasks.Task<string> To_InfoAsync(string name, string comp, string Danhao)
+        public System.Threading.Tasks.Task<string> To_InfoAsync(string comp, string Danhao)
         {
-            return base.Channel.To_InfoAsync(name, comp, Danhao);
+            return base.Channel.To_InfoAsync(comp, Danhao);
         }
         
         public System.Threading.Tasks.Task<string> SYS_CHECKINAsync(string comp, string mac)

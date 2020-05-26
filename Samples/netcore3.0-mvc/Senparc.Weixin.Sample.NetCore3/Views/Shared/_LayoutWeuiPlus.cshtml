@@ -28,11 +28,15 @@
     </div>
 
     <environment names="Development">
+        <script type="text/javascript" src="~/lib/jquery/dist/jquery.js"></script>
+        <script type="text/javascript">$.noConflict();</script>
         <script type="text/javascript" src="~/lib/zepto/zepto.js"></script>
         <script type="text/javascript" src="~/lib/fastclick/fastclick.js"></script>
         <script type="text/javascript" src="~/js/zepto.weui.js"></script>
     </environment>
     <environment names="Staging,Production">
+        <script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript">$.noConflict();</script>
         <script type="text/javascript" src="~/lib/zepto/zepto.min.js"></script>
         <script type="text/javascript" src="~/lib/fastclick/fastclick.min.js"></script>
         <script type="text/javascript" src="~/js/zepto.weui.min.js"></script>

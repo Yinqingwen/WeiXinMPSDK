@@ -41,6 +41,15 @@ namespace Senparc.Weixin.Sample.NetCore3.Controllers.Client
             return Json(ydInfo, new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() });
         }
 
+        public IActionResult GetPhoneInfo(string id)
+        {
+            PhoneInfo phoneInfo = new PhoneInfo();
+
+            phoneInfo = phoneInfo.GetPhoneInfo(id);
+
+            return Json(phoneInfo, new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() });
+        }
+
         [HttpGet]
         public ActionResult Create()
         {
@@ -70,8 +79,9 @@ namespace Senparc.Weixin.Sample.NetCore3.Controllers.Client
 
             FydInfo fydInfo = new FydInfo();
             fydInfo = fydInfo.GetFydInfo(result);
-                        
-            return View("CreateMsg",fydInfo);
+            
+            return Json(fydInfo, new JsonSerializerSettings() { ContractResolver = new DefaultContractResolver() });
+            //return View("CreateMsg",fydInfo);
         }
     }
 }

@@ -10,6 +10,16 @@ var Validate = {
         if (value === "") {
             $.toptip(errmsg);
             $(elem).focus();
+            return;
+        }
+    },
+    //字段长度校验
+    len: function (elem, maxlength, errmsg) {
+        var value = $(elem).val();
+        if (value.length > maxlength) {
+            $.toptip(errmsg);
+            $(elem).focus();
+            return;
         }
     },
     //电话号码校验
@@ -18,6 +28,7 @@ var Validate = {
         if (!/^((0\d{2,3}-\d{7,8})|(\d{7,8})|(1[3456789]\d{9}))$/.test(value)) { // /^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57]|17[0-9])[0-9]{8}$/
             $.toptip(errmsg);
             $(elem).focus();
+            return;
         }
     },
     //Email校验
@@ -26,6 +37,7 @@ var Validate = {
         if (!/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/.test(value)) {
             $toptip(errmsg);
             $(elem).focus();
+            return;
         } 
     },
     //相同校验
@@ -36,6 +48,7 @@ var Validate = {
         if (value1 !== value2) {
             $.toptip(errmsg);
             $(elem2).focus();
+            return;
         } 
     }
 };

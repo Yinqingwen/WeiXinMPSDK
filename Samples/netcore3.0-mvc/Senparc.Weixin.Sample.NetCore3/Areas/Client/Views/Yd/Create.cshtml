@@ -10,7 +10,7 @@
                 <label class="weui-label">收货人电话</label>
             </div>
             <div class="weui-cell__bd">
-                <input class="weui-input req" pattern="[0-9]*" placeholder="请输入收货人电话号码" type="tel" id="rectel" name="rectel">
+                <input class="weui-input req" pattern="[0-9]*" placeholder="收货人电话，最好是手机" type="tel" id="rectel" name="rectel">
             </div>
         </div>
         <div class="weui-cell">
@@ -18,7 +18,7 @@
                 <label class="weui-label">收货人</label>
             </div>
             <div class="weui-cell__bd">
-                <input class="weui-input" placeholder="请输入收货人姓名" type="text" id="recer" name="recer">
+                <input class="weui-input" placeholder="收货人姓名" type="text" id="recer" name="recer">
             </div>
         </div>
         <div class="weui-cell">
@@ -26,7 +26,7 @@
                 <label class="weui-label">货物名称</label>
             </div>
             <div class="weui-cell__bd">
-                <input class="weui-input" placeholder="请输入货物名称" type="text" id="varo" name="varo">
+                <input class="weui-input" placeholder="货物名称" type="text" id="varo" name="varo">
             </div>
         </div>
         <div class="weui-cell">
@@ -51,10 +51,10 @@
         </div>
         <div class="weui-cell">
             <div class="weui-cell__hd">
-                <label class="weui-label">目的城市</label>
+                <label class="weui-label">目的地</label>
             </div>
             <div class="weui-cell__bd">
-                <input class="weui-input" value="" placeholder="请输入目的城市" type="text" id="city" name="city">
+                <input class="weui-input" value="" placeholder="本物流直达城市名称" type="text" id="city" name="city">
             </div>
         </div>
         <div class="weui-cell">
@@ -62,7 +62,7 @@
                 <label class="weui-label">发货人</label>
             </div>
             <div class="weui-cell__bd">
-                <input class="weui-input" value="" placeholder="请输入发货人姓名" type="text" id="sender" name="sender">
+                <input class="weui-input" value="" placeholder="发货人姓名" type="text" id="sender" name="sender">
             </div>
         </div>
         <div class="weui-cell">
@@ -70,7 +70,7 @@
                 <label class="weui-label">发货人电话</label>
             </div>
             <div class="weui-cell__bd">
-                <input class="weui-input" value="" placeholder="请输入发货人电话" type="tel" id="sendtel" name="sendtel">
+                <input class="weui-input" value="" placeholder="发货人电话，最好是手机" type="tel" id="sendtel" name="sendtel">
             </div>
         </div>
     </div>
@@ -82,6 +82,7 @@
 @section script
 {
     @*界面校验类*@
+    <script type="text/javascript" src="~/lib/jquery.form/jquery.form.js"></script>
     <script type="text/javascript" src="~/js/Validate.js"></script>
     <script type="text/javascript">
         //数值器增减函数
@@ -127,6 +128,32 @@
                     errmsg: "发货人电话不能为空！！！"
                 }
             ];
+            //字段长度校验
+            var lengthArr = [
+                {
+                    id: "recer",
+                    errmsg: "不能超过5个汉字"
+                },
+                {
+                    id: "city",
+                    errmsg: "不能超过5个汉字"
+                },
+                {
+                    id: "sender",
+                    errmsg: "不能超过5个汉字"
+                }
+            ];
+            //收货电话信息查询
+            $("#rectel").blur(function () {
+                $.showLoading();
+                $.getJSON("/Client/Yd/GetPhoneInfo", { id: $(this).val() }, function (json) {
+                    if (parseInt(json.state)) {
+                        $("#recer").val(json.收货人);
+                        $("#city").val(json.到站城市);
+                    }
+                });
+                $.hideLoading();
+            });
 
             //发货按钮处理
             $(document).on("click", "#btn", function () {
@@ -134,18 +161,40 @@
                 $.each(requireArr, function (i, obj) {
                     Validate.require("#" + obj.id, obj.errmsg);
                 });
+                //校验长度
+                $.each(lengthArr, function (i, obj) {
+                    Validate.len("#" + obj.id, 5, obj.errmsg);
+                });
                 //校验电话格式
                 Validate.phone("#rectel", "收货人电话号码格式错误！！！");
                 Validate.phone("#sendtel", "发货人电话号码格式错误！！！");
+
                 //提交数据
-                $("#Yd-form").submit();
-                /*
-                $.confirm("您确认提交发货单？", "发货单提交", function () {
-                    //确认操作
-                    
-                }, function () {
-                    //取消操作
-                });*/
+                $.showLoading();                    //显示加载图标
+                //提交数据
+                jQuery("#Yd-form").ajaxSubmit({
+                    dataType: "json",
+                    success: function (json) {
+                        //关闭加载图标
+                        $.hideLoading();
+                        if (json.state === "1") {
+                            //提交成功，显示提示
+                            $.toptip('运单创建成功！', 'success');
+                            //保存发货人信息
+                            var old_sender = $("#sender").val();
+                            var old_sendtel = $("#sendtel").val();
+                            //初始化表单
+                            jQuery("#Yd-form").resetForm();
+                            //填写发货人信息
+                            $("#sender").val(old_sender);
+                            $("#sendtel").val(old_sendtel);
+                        } else {
+                            //显示错误信息
+                            $.toptip('运单创建错误，请重试！', 'error')
+                        }
+                    },
+                });
+                return false; 
             })
 
             //解决表单控件不能回弹 只有微信ios有这个问题
