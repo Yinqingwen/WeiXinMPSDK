@@ -2,11 +2,20 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    ViewData["Title"] = "网点地址";
+    ViewData["Title"] = "网点分布";
     Layout = "~/Views/Shared/_LayoutWeuiPlus.cshtml";
 }
+@section css
+{
+    <style type="text/css">
+        .weui-cell__ft > a 
+        {
+            padding-right: 1em;
+        }
+    </style>
+}
 <div class="page-bd">
-    <div class="weui-cells__title">网点地址列表</div>
+    <div class="weui-cells__title">网点分布列表</div>
     <ul class="collapse">
         <li class="">
             <div class="weui-flex js-category">
@@ -211,14 +220,18 @@
                             <p>济南</p>
                             <p>山东汽配成(居然之家)东排物流区J-73号</p>
                         </div>
-                        <div class="weui-cell__ft">13333266139</div>
+                        <div class="weui-cell__ft">
+                            <a href="tel://13333266139">13333266139</a>
+                        </div>
                     </a>
                     <a class="weui-cell weui-cell_access" href="JavaScript:;">
                         <div class="weui-cell__bd">
                             <p>济南</p>
                             <p>济南泉立汽配城东区</p>
                         </div>
-                        <div class="weui-cell__ft">13361096139</div>
+                        <div class="weui-cell__ft">
+                            <a href="tel://13361096139">13361096139</a>
+                        </div>
                     </a>
                 </div>
             </div>
@@ -364,7 +377,7 @@
         </li>
         <li class="">
             <div class="weui-flex js-category">
-                <div class="weui-flex__item">京津翼</div>
+                <div class="weui-flex__item">京津冀</div>
                 <i class="icon icon-74"></i>
             </div>
             <div class="page-category js-categoryInner">
